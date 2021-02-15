@@ -1,5 +1,25 @@
+# =============== #
+# Unity generated #
+# =============== #
 Temp/
 Obj/
 UnityGenerated/
 Library/
+Logs/
+Packages/
+Assembly-CSharp.csproj
 Assets/AssetStoreTools*
+
+# ===================================== #
+# Visual Studio / MonoDevelop generated #
+# ===================================== #
+ExportedObj/
+*.svd
+*.userprefs
+*.csproj
+*.pidb
+*.suo
+*.sln
+*.user
+*.unityproj
+*.booproj
