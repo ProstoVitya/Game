@@ -2,4 +2,7 @@ Temp/
 Obj/
 UnityGenerated/
 Library/
+Logs/
+Packages/
+Assembly-CSharp.csproj
 Assets/AssetStoreTools*
