@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class CharecterController : MonoBehaviour {
     public float        horizontalSpeed;
+    public float        verticalSpeed;
     private float       speedX;
+    private float       speedY;
     public float        verticalImpulse;
     private Rigidbody2D rb;
     private bool        isGrounded;
+    private bool        onStairs;
 
     private void Start() {
         rb = GetComponent<Rigidbody2D>();
@@ -27,18 +30,39 @@ public class CharecterController : MonoBehaviour {
         else if (Input.GetKey(KeyCode.D)) {
             speedX = horizontalSpeed;
         }
-        
-        transform.Translate(speedX, 0, 0);
-        speedX = 0;
+
+        if (Input.GetKey(KeyCode.W))
+        {
+            speedY = verticalSpeed;
+        }
+        else if (Input.GetKey(KeyCode.S))
+        {
+            speedY = -verticalSpeed;
+        }
+
+        if (onStairs)
+            transform.Translate(0, speedY, 0);
+        else
+        {
+            transform.Translate(speedX, 0, 0);
+        }
+
+        speedX = speedY = 0;
     }
 
     private void OnCollisionEnter2D(Collision2D collision) {
         if (collision.gameObject.tag == "Ground")
             isGrounded = true;
+
+        if (collision.gameObject.tag == "Stairs")
+            isGrounded = true;
     }
 
     private void OnCollisionExit2D(Collision2D collision) {
         if (collision.gameObject.tag == "Ground")
-            isGrounded = true;
+            isGrounded = false;
+
+        if (collision.gameObject.tag == "Stairs")
+            isGrounded = false;
     }
 }
