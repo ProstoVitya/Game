@@ -97,7 +97,6 @@ GameObject:
   - component: {fileID: 323043804600290056}
   - component: {fileID: 2616416749252960222}
   - component: {fileID: 8544163131151555463}
-  - component: {fileID: 3217966190699958403}
   m_Layer: 0
   m_Name: Hero
   m_TagString: Player
@@ -164,7 +163,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.31, y: 0.6}
+  m_Size: {x: 0.484375, y: 0.9375}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -188,7 +187,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 0.31, y: 0.6}
-    newSize: {x: 0.31, y: 0.6}
+    newSize: {x: 0.484375, y: 0.9375}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
@@ -245,21 +244,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f17a370d259521c4c87d78cb4ddfeeb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  jumpForce: 10
-  jumpsValue: 1
---- !u!114 &3217966190699958403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7194813492507710310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f17a370d259521c4c87d78cb4ddfeeb4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 10
+  speed: 5
   jumpForce: 10
   jumpsValue: 1
