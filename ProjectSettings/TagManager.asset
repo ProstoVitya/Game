@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Ground
   - Ladder
+  - Block
+  - RoomPoint
+  - Rooms
   layers:
   - Default
   - TransparentFX
