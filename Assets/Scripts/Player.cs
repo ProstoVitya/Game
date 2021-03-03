@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float speed = 3f;
-    [SerializeField] private int maxHP = 100;
+    [SerializeField] private int maxHP;
     [SerializeField] private float jumpForce = 15f;
     private Rigidbody2D rb;
     private SpriteRenderer sprite;
@@ -58,6 +58,10 @@ public class Player : MonoBehaviour
     }
     void Lose() {
         main.GetComponent<Main>().Lose();
+    }
+
+    public int getHP() {
+        return currHP;
     }
 }
 
