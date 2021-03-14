@@ -1,28 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
     public Image bar;
-    public float fill;
-    // Start is called before the first frame update
+    public int maxHP;
+    int currHP;
+    private int fill;
+
     void Start()
     {
-        fill = 1f;
+        currHP = fill = maxHP;
     }
-    void Damage(int d,int MaxHealth)
-    {
-        fill -= d / MaxHealth;
-    }
-    void Heal(int h, int MaxHealth)
-    {
-        fill += h / MaxHealth;
-    }
-    // Update is called once per frame
+
     void Update()
     {
-        bar.fillAmount = fill;
+        if (fill != currHP) {
+            bar.fillAmount = currHP * 0.01f;
+            fill = currHP;
+        }
+    }
+
+    public void GetDamage(int damage) {
+        currHP -= damage;
+        print(currHP);
+    }
+
+    public int GetHP() {
+        return currHP;
     }
 }
