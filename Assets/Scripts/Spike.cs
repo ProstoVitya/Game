@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Spike : MonoBehaviour
 {
@@ -8,7 +6,7 @@ public class Spike : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<Player>().GetDamage(10);
+            collision.gameObject.GetComponent<HealthBar>().GetDamage(10);
         }
 
     }
