@@ -16,16 +16,20 @@ public class EnemyPatrol : MonoBehaviour
     bool patrol = false;
     bool angry = false;
     bool goBack = false;
+
+    private AddRoom room;
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         sprite = GetComponent<SpriteRenderer>();
+        room = GetComponentInParent<AddRoom>();
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Player")
         {
-            collision.gameObject.GetComponent<Player>().GetDamage(10);
+            collision.gameObject.GetComponent<HealthBar>().GetDamage(10);
         }
 
     }
@@ -62,6 +66,13 @@ public class EnemyPatrol : MonoBehaviour
         {
             GoBack();
         }
+
+        /*
+         
+             //когда враг умирает
+            Destroy(gameObject);
+            room.enemies.Remove(gameObject);
+        */
     }
     void Patrol() 
     {
