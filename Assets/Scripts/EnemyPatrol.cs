@@ -12,7 +12,7 @@ public class EnemyPatrol : MonoBehaviour
     private Transform player;
     public float stopDistance;
     private SpriteRenderer sprite;
-    //public Transform wallDetect;
+    public Transform wallDetect;
     bool patrol = false;
     bool angry = false;
     bool goBack = false;
@@ -76,6 +76,21 @@ public class EnemyPatrol : MonoBehaviour
     }
     void Patrol() 
     {
+        RaycastHit2D gr = Physics2D.Raycast(wallDetect.position, Vector2.right, 0.05f);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(wallDetect.position, 0.05f);
+        if (colliders.Length > 1 && colliders.All(x => !x.GetComponent<PlayerController>()))
+        {
+            if (moveRight == true)
+            {
+                transform.eulerAngles = new Vector3(0, 180, 0);
+                moveRight = false;
+            }
+            else
+            {
+                transform.eulerAngles = new Vector3(0, 0, 0);
+                moveRight = true;
+            }
+        }
         if (transform.position.x > patrolPoint.position.x + patrolDistance)
         {
             transform.eulerAngles = new Vector3(0, 180, 0);

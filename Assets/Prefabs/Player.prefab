@@ -69,7 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d911ca7cc5e488047a3aca317e0222aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 5
   jumpForce: 15
   groundCheck: {fileID: 2762702801614504092}
 --- !u!114 &1510419268448425644
@@ -142,6 +142,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1062130101260464581}
   - component: {fileID: 3473675073528888946}
+  - component: {fileID: 3944427819013544745}
   m_Layer: 0
   m_Name: PlayerSprite
   m_TagString: Untagged
@@ -213,3 +214,22 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &3944427819013544745
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8789584165108664837}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d522cc6d9ce25924f842b82c1e572c8a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

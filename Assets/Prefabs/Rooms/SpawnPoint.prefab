@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 9164442888958587351}
   - component: {fileID: 2541601233310462765}
   - component: {fileID: 262787168953905174}
-  - component: {fileID: 6878928441841870587}
   m_Layer: 0
   m_Name: SpawnPoint
   m_TagString: RoomPoint
@@ -94,22 +93,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &6878928441841870587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6277825660534092936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02810cfbc12f89640bac15e59503084c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyTypes:
-  - {fileID: 8583045624628243806, guid: 44855ccd12f68684095730b1f4fc9bed, type: 3}
-  spawners:
-  - {fileID: 0}
-  - {fileID: 0}
-  bonusTypes: []
-  enemies: []

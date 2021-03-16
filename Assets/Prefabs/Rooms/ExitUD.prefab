@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3838145854001117781}
   - component: {fileID: 5444677101442126775}
   - component: {fileID: 282391073745854368}
-  - component: {fileID: 4933440860821254653}
   m_Layer: 0
   m_Name: ExitUD
   m_TagString: Untagged
@@ -93,22 +92,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ea935946bdcd744e9161170ab805958, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4933440860821254653
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7413837310736946647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02810cfbc12f89640bac15e59503084c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyTypes:
-  - {fileID: 8583045624628243806, guid: 44855ccd12f68684095730b1f4fc9bed, type: 3}
-  spawners:
-  - {fileID: 0}
-  - {fileID: 0}
-  bonusTypes: []
-  enemies: []
