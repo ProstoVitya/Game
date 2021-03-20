@@ -4,61 +4,59 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed;
-    public float jumpForce;
-    private float moveInput;
-
-    private bool facingRight = true;
-
+    [SerializeField] private float speed = 3f;
+    [SerializeField] private float jumpForce = 15f;
     private Rigidbody2D rb;
+    private bool isGrounded = false;
+    public Transform groundCheck;
 
-    public int jumpsValue;
-    private int extraJumps;
-    private bool isGrounded;
+    private SpriteRenderer sprite;
+    private Animator animator;
 
-    // Start is called before the first frame update
-    private void Start()
+    void Start()
     {
-        extraJumps = jumpsValue;
         rb = GetComponent<Rigidbody2D>();
+        sprite = GetComponentInChildren<SpriteRenderer>();
+        animator = GetComponentInChildren<Animator>();
     }
 
-    // Update is called once per frame
-    private void FixedUpdate()
+    void FixedUpdate()
     {
-        moveInput = Input.GetAxis("Horizontal");
-        rb.velocity = new Vector2(moveInput * speed, rb.velocity.y);
-
-        if(!facingRight && moveInput > 0)
-        {
-            Flip();
-
-        } else if(facingRight && moveInput < 0)
-        {
-            Flip();
-        }
+        CheckGround();
+        
     }
-
-    private void Update()
+    void Update()
     {
-        if (isGrounded) {
-            extraJumps = jumpsValue;
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) && extraJumps > 0)
-        {
-            rb.velocity = Vector2.up * jumpForce;
-            --extraJumps;
-        }
+        if (isGrounded)
+            animator.SetInteger("State", 1);
+    
+        if (Input.GetButton("Horizontal"))
+            Run();
+        if (Input.GetButtonDown("Jump") && isGrounded)
+            Jump();
     }
 
-    void Flip() {
-        facingRight = !facingRight;
-        Vector3 scaler = transform.localScale;
-        scaler.x *= -1;
-        transform.localScale = scaler;
+    private void Run()
+    {
+        if(isGrounded)
+            animator.SetInteger("State", 2);
+        sprite.flipX = Input.GetAxis("Horizontal") < 0.0f;
+        Vector3 dir = transform.right * Input.GetAxis("Horizontal");
+        transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
     }
 
+    private void Jump()
+    {
+        rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+    }
+
+    private void CheckGround()
+    {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, 0.1f);
+        isGrounded = colliders.Length > 2;
+    }
+
+    /*
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.tag == "Ground")
@@ -70,4 +68,5 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.tag == "Ground")
             isGrounded = false;
     }
+    */
 }
