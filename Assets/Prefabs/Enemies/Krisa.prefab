@@ -25,8 +25,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 878257737806599819}
-  m_Layer: 0
-  m_Name: GameObject
+  m_Layer: 8
+  m_Name: WallDetector
   m_TagString: Untagged
   m_Icon: {fileID: 3306451490063965843, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -59,8 +59,9 @@ GameObject:
   - component: {fileID: 1825380257273139967}
   - component: {fileID: 8583045623446291052}
   - component: {fileID: 8583045623446291053}
+  - component: {fileID: 5587160642588119621}
   - component: {fileID: 6718161341090829931}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: KrisaPatrol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -121,12 +122,13 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 5c599dab6ad0f9547b4f29ec71703494, type: 3}
+  m_Sprite: {fileID: -3748057888419307590, guid: 9e26812998b1f5245a541ede3865f8a3,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.73, y: 1.7}
+  m_Size: {x: 1.92, y: 1.92}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -186,6 +188,22 @@ MonoBehaviour:
   patrolPoint: {fileID: 8583045624395035913}
   stopDistance: 3
   wallDetect: {fileID: 878257737806599819}
+--- !u!114 &5587160642588119621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8583045623446291055}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecb3bc20a1079e44a87ab0bfb776b551, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bar: {fileID: 838936645284250816}
+  maxHP: 100
+  bloodEffect: {fileID: 5218522361467105307, guid: b2def12aa5e7ce741a69533edf5bbbbc,
+    type: 3}
 --- !u!95 &6718161341090829931
 Animator:
   serializedVersion: 3
@@ -214,7 +232,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8583045624395035913}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PatrolPoint
   m_TagString: Untagged
   m_Icon: {fileID: -5938655980376293919, guid: 0000000000000000d000000000000000, type: 0}
@@ -244,7 +262,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8583045624628243805}
-  m_Layer: 0
+  - component: {fileID: 8023922438231055346}
+  m_Layer: 8
   m_Name: Krisa
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -268,6 +287,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8023922438231055346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8583045624628243806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7892c3cc9ddd1284e8607675b53e29b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5564170436317736054
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -289,6 +320,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Color.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5085522647368150836, guid: 88b12a65cee0cf845815d1044d5c48d1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5085522647413470396, guid: 88b12a65cee0cf845815d1044d5c48d1,
         type: 3}
@@ -410,6 +446,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: HPbar
       objectReference: {fileID: 0}
+    - target: {fileID: 5085522647413470397, guid: 88b12a65cee0cf845815d1044d5c48d1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5085522647741491660, guid: 88b12a65cee0cf845815d1044d5c48d1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 88b12a65cee0cf845815d1044d5c48d1, type: 3}
 --- !u!1 &838936646005709003 stripped
@@ -424,3 +470,15 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5564170436317736054}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &838936645284250816 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5085522646289557686, guid: 88b12a65cee0cf845815d1044d5c48d1,
+    type: 3}
+  m_PrefabInstance: {fileID: 5564170436317736054}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

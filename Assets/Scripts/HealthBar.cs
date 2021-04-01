@@ -3,10 +3,11 @@ using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
-    public Image bar;
-    public int maxHP;
-    int currHP;
-    private int fill;
+    public Image      bar;
+    public int        maxHP;
+    int               currHP;
+    private int       fill;
+    public GameObject bloodEffect;
 
     void Start()
     {
@@ -23,7 +24,7 @@ public class HealthBar : MonoBehaviour
 
     public void GetDamage(int damage) {
         currHP -= damage;
-        print(currHP);
+        Destroy(Instantiate(bloodEffect, transform.position, Quaternion.identity), 1.5f);
     }
 
     public int GetHP() {

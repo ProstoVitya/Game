@@ -31,9 +31,9 @@ public class AddRoom : MonoBehaviour
                 if (rand < 10)
                 {
                     GameObject emnemyType = enemyTypes[Random.Range(0, enemyTypes.Length)];
-                    GameObject enemy = Instantiate(emnemyType, spawner.position, Quaternion.identity) as GameObject;
+                    GameObject enemy = Instantiate(emnemyType, spawner.position, Quaternion.identity);
                 }
-                else { 
+                else {
                     //Появляется бонус
                 }
             }

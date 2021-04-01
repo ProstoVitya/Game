@@ -25,11 +25,13 @@ public class Ladder : MonoBehaviour
             else {
                 collision.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
             }
+            collision.GetComponent<PlayerController>().is_climbimg = true;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         collision.GetComponent<Rigidbody2D>().gravityScale = gravityScale;
+        collision.GetComponent<PlayerController>().is_climbimg = false;
     }
 }
