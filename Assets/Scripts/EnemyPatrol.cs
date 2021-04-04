@@ -78,12 +78,14 @@ public class EnemyPatrol : MonoBehaviour
     {
         if (transform.position.x > patrolPoint.position.x + patrolDistance)
         {
-            transform.eulerAngles = new Vector3(0, 180, 0);
+             // transform.eulerAngles = new Vector3(0, 180, 0);
+            transform.localScale = new Vector3(-1, 1, 1);
             moveRight = false;
         }
         if (transform.position.x < patrolPoint.position.x - patrolDistance)
         {
-            transform.eulerAngles = new Vector3(0, 0, 0);
+            // transform.eulerAngles = new Vector3(0, 0, 0);
+            transform.localScale = new Vector3(1, 1, 1);
             moveRight = true;
         }
         
@@ -94,12 +96,14 @@ public class EnemyPatrol : MonoBehaviour
     {
         if (player.position.x < transform.position.x && moveRight == true)
         {
-            transform.eulerAngles = new Vector3(0, 180, 0);
+             // transform.eulerAngles = new Vector3(0, 180, 0);
+            transform.localScale = new Vector3(-1, 1, 1);
             moveRight = false;
         }
         if (player.position.x > transform.position.x && moveRight == false)
         {
-            transform.eulerAngles = new Vector3(0, 0, 0);
+            // transform.eulerAngles = new Vector3(0, 0, 0);
+            transform.localScale = new Vector3(1, 1, 1);
             moveRight = true;
         }
         transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
@@ -109,12 +113,14 @@ public class EnemyPatrol : MonoBehaviour
     {
         if (patrolPoint.position.x < transform.position.x && moveRight == true)
         {
-            transform.eulerAngles = new Vector3(0, 180, 0);
+            // transform.eulerAngles = new Vector3(0, 180, 0);
+            transform.localScale = new Vector3(-1, 1, 1);
             moveRight = false;
         }
         if (patrolPoint.position.x > transform.position.x && moveRight == false)
         {
-            transform.eulerAngles = new Vector3(0, 0, 0);
+            // transform.eulerAngles = new Vector3(0, 0, 0);
+            transform.localScale = new Vector3(1, 1, 1);
             moveRight = true;
         }
         transform.position = Vector2.MoveTowards(transform.position, patrolPoint.position, speed * Time.deltaTime);
