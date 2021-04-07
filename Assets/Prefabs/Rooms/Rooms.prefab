@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6026220361667361207}
   - component: {fileID: 6026220361667361206}
-  - component: {fileID: 3942758707395919446}
   m_Layer: 0
   m_Name: Rooms
   m_TagString: Rooms
@@ -64,22 +63,3 @@ MonoBehaviour:
   - {fileID: 650246449094511413, guid: 90fce3d4de58876439e57dd16b57f936, type: 3}
   - {fileID: 650246449094511413, guid: 24c4c5087bbdb4746aae379eeedd67ce, type: 3}
   - {fileID: 650246449094511413, guid: a9088ee365e33de43a21612640058c4d, type: 3}
---- !u!114 &3942758707395919446
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6026220361667361209}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02810cfbc12f89640bac15e59503084c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyTypes:
-  - {fileID: 8583045624628243806, guid: 44855ccd12f68684095730b1f4fc9bed, type: 3}
-  spawners:
-  - {fileID: 0}
-  - {fileID: 0}
-  bonusTypes: []
-  enemies: []

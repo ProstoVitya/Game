@@ -12,7 +12,7 @@ public class EnemyPatrol : MonoBehaviour
     private Transform player;
     public float stopDistance;
     private SpriteRenderer sprite;
-    //public Transform wallDetect;
+    public Transform wallDetect;
     bool patrol = false;
     bool angry = false;
     bool goBack = false;
@@ -67,71 +67,16 @@ public class EnemyPatrol : MonoBehaviour
             GoBack();
         }
 
-        /*
+       
          
-             //когда враг умирает
-            Destroy(gameObject);
+        if(gameObject.GetComponent<HealthBar>().GetHP() <= 0)
             room.enemies.Remove(gameObject);
-        */
     }
     void Patrol() 
     {
-        if (transform.position.x > patrolPoint.position.x + patrolDistance)
-        {
-             // transform.eulerAngles = new Vector3(0, 180, 0);
-            transform.localScale = new Vector3(-1, 1, 1);
-            moveRight = false;
-        }
-        if (transform.position.x < patrolPoint.position.x - patrolDistance)
-        {
-            // transform.eulerAngles = new Vector3(0, 0, 0);
-            transform.localScale = new Vector3(1, 1, 1);
-            moveRight = true;
-        }
-        
-        transform.Translate(Vector2.right * speed * Time.deltaTime);
-    }
-
-    void Agr() 
-    {
-        if (player.position.x < transform.position.x && moveRight == true)
-        {
-             // transform.eulerAngles = new Vector3(0, 180, 0);
-            transform.localScale = new Vector3(-1, 1, 1);
-            moveRight = false;
-        }
-        if (player.position.x > transform.position.x && moveRight == false)
-        {
-            // transform.eulerAngles = new Vector3(0, 0, 0);
-            transform.localScale = new Vector3(1, 1, 1);
-            moveRight = true;
-        }
-        transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
-    }
-
-    void GoBack() 
-    {
-        if (patrolPoint.position.x < transform.position.x && moveRight == true)
-        {
-            // transform.eulerAngles = new Vector3(0, 180, 0);
-            transform.localScale = new Vector3(-1, 1, 1);
-            moveRight = false;
-        }
-        if (patrolPoint.position.x > transform.position.x && moveRight == false)
-        {
-            // transform.eulerAngles = new Vector3(0, 0, 0);
-            transform.localScale = new Vector3(1, 1, 1);
-            moveRight = true;
-        }
-        transform.position = Vector2.MoveTowards(transform.position, patrolPoint.position, speed * Time.deltaTime);
-    }
-    
-}
-/*{  //ПАТРУЛИРОВАНИЕ МЕЖДУ СТЕН
         RaycastHit2D gr = Physics2D.Raycast(wallDetect.position, Vector2.right, 0.05f);
-        transform.Translate(Vector2.right * speed * Time.deltaTime);
         Collider2D[] colliders = Physics2D.OverlapCircleAll(wallDetect.position, 0.05f);
-        if (colliders.Length > 0 && colliders.All(x => !x.GetComponent<Player>()))
+        if (colliders.Length > 1 && colliders.All(x => !x.GetComponent<PlayerController>()))
         {
             if (moveRight == true)
             {
@@ -144,4 +89,54 @@ public class EnemyPatrol : MonoBehaviour
                 moveRight = true;
             }
         }
-    }*/
+        if (transform.position.x > patrolPoint.position.x + patrolDistance)
+        {
+            transform.eulerAngles = new Vector3(0, 180, 0);
+            moveRight = false;
+        }
+        if (transform.position.x < patrolPoint.position.x - patrolDistance)
+        {
+            transform.eulerAngles = new Vector3(0, 0, 0);
+            moveRight = true;
+        }
+        
+        transform.Translate(Vector2.right * speed * Time.deltaTime);
+    }
+
+    void Agr() 
+    {
+        if (player.position.x < transform.position.x && moveRight == true)
+        {
+            transform.eulerAngles = new Vector3(0, 180, 0);
+            moveRight = false;
+        }
+        if (player.position.x > transform.position.x && moveRight == false)
+        {
+            transform.eulerAngles = new Vector3(0, 0, 0);
+            moveRight = true;
+        }
+        transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
+    }
+
+    void GoBack() 
+    {
+        if (patrolPoint.position.x < transform.position.x && moveRight == true)
+        {
+            transform.eulerAngles = new Vector3(0, 180, 0);
+            moveRight = false;
+        }
+        if (patrolPoint.position.x > transform.position.x && moveRight == false)
+        {
+            transform.eulerAngles = new Vector3(0, 0, 0);
+            moveRight = true;
+        }
+        transform.position = Vector2.MoveTowards(transform.position, patrolPoint.position, speed * Time.deltaTime);
+    }
+
+    public void PushAway(Vector3 pushFrom, float pushPower) {
+        if (GetComponent<Rigidbody2D>() == null)
+            return;
+        Vector3 pushDirection = pushFrom - transform.position;
+        GetComponent<Rigidbody2D>().AddForce(pushDirection * pushPower);
+    }
+}
