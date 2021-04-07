@@ -7,7 +7,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce            = 15f;
     private bool                   isGrounded           = false;
     private bool                   onRight              = true;
-    public  bool                   is_climbimg          = false;
 
     public Transform               groundCheck;
     public Transform               attackPos;
@@ -36,10 +35,8 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        if (isGrounded && !is_climbimg)
+        if (isGrounded)
             animator.SetInteger("State", 1);
-
-        animator.SetBool("is_climbing", is_climbimg);
     
         if (Input.GetButton("Horizontal"))
             Run();
@@ -55,7 +52,7 @@ public class PlayerController : MonoBehaviour
 
     private void Run()
     {
-        if(isGrounded && !is_climbimg)
+        if(isGrounded)
             animator.SetInteger("State", 2);
         sprite.flipX = Input.GetAxis("Horizontal") < 0.0f;
         onRight = Input.GetAxis("Horizontal") > 0.0f;
