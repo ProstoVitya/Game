@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PauseMenu : MonoBehaviour
+public class gameUI : MonoBehaviour
 {
     public static bool gameIsPaused = false;
     public GameObject  pauseMenuUI;
+    public GameObject  DeathScreenUI;
 
     private void Start()
     {
@@ -18,6 +19,12 @@ public class PauseMenu : MonoBehaviour
             else
                 Pause();
         }
+
+        if (GameObject.FindGameObjectWithTag("Player").GetComponent<HealthBar>().GetHP() <= 0) {
+            DeathScreenUI.SetActive(true);
+            Destroy(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>());
+        }
+
     }
 
    public void Resume() {
@@ -39,5 +46,10 @@ public class PauseMenu : MonoBehaviour
 
     public void Exit() {
         Application.Quit();
+    }
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(1);
     }
 }

@@ -6,8 +6,8 @@ public class Ladder : MonoBehaviour
 {
     [SerializeField]
 
-    float speed = 5;
-    private float gravityScale = 5;
+    float speed = 5f;
+    private float gravityScale = 5f;
 
     private void OnTriggerStay2D(Collider2D collision)
     {

@@ -2,18 +2,23 @@
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody2D             rb;
+    private Rigidbody2D            rb;
+
+    [Header("Move Patameters")]
     [SerializeField] private float speed                = 3f;
+    [SerializeField] private float verticalSpeed        = 5f;
     [SerializeField] private float jumpForce            = 15f;
+    private float                  gravityScale         = 5f;
     private bool                   isGrounded           = false;
     private bool                   onRight              = true;
-
+    private bool                   inCollWLadder        = false;
     public Transform               groundCheck;
-    public Transform               attackPos;
 
+    [Header("Attack Patameters")]
+    public Transform               attackPos;
+    public LayerMask               whatIsEnemies;
     private float                  timeBtwAttack;
     public float                   startTimeBtwAttack;
-    public LayerMask               whatIsEnemies;
     public float                   attackRange;
     public int                     damage;
     public float                   attackForce;
@@ -31,23 +36,21 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     {
         CheckGround();
-        
     }
     void Update()
     {
         if (isGrounded)
             animator.SetInteger("State", 1);
-    
-        if (Input.GetButton("Horizontal"))
-            Run();
-        if (Input.GetButtonDown("Jump") && isGrounded)
-            Jump();
         if (Input.GetKeyDown(KeyCode.Mouse0) && timeBtwAttack <= 0)
             Attack();
         else
-        {
             timeBtwAttack -= Time.deltaTime;
-        }
+
+        if (Input.GetButtonDown("Jump") && isGrounded)
+            Jump();
+        if (Input.GetButton("Horizontal"))
+            Run();
+        
     }
 
     private void Run()
@@ -58,6 +61,7 @@ public class PlayerController : MonoBehaviour
         onRight = Input.GetAxis("Horizontal") > 0.0f;
         Vector3 dir = transform.right * Input.GetAxis("Horizontal");
         transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
+       //rb.velocity = new Vector2(speed * Input.GetAxis("Horizontal"), 0);
         attackPos.transform.position = (onRight) ? new Vector2(transform.position.x + 0.75f, transform.position.y)
                                                  : new Vector2(transform.position.x - 0.75f, transform.position.y);
     }
@@ -70,7 +74,7 @@ public class PlayerController : MonoBehaviour
     private void CheckGround()
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, 0.1f);
-        isGrounded = colliders.Length > 2;
+        isGrounded = (colliders.Length > 2) && !inCollWLadder;
     }
 
     private void Attack()
@@ -89,5 +93,32 @@ public class PlayerController : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
+    }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ladder"))
+        {
+            rb.gravityScale = 0;
+            inCollWLadder = true;
+            if (Input.GetKey(KeyCode.W))
+            {
+                rb.velocity = new Vector2(0, verticalSpeed);
+            }
+            else if (Input.GetKey(KeyCode.S))
+            {
+                rb.velocity = new Vector2(0, -verticalSpeed);
+            }
+            else
+            {
+                rb.velocity = new Vector2(0, 0);
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        rb.gravityScale = gravityScale;
+        inCollWLadder = false;
     }
 }
