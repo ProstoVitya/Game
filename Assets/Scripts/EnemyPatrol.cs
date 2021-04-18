@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+
 public class EnemyPatrol : MonoBehaviour
 {
     public float speed = 3f;
@@ -19,6 +20,16 @@ public class EnemyPatrol : MonoBehaviour
 
     private AddRoom room;
 
+    void MoveRight()
+    {
+        transform.eulerAngles = new Vector3(0, 0, 0);
+        moveRight = true;
+    }
+    void MoveLeft()
+    {
+        transform.eulerAngles = new Vector3(0, 180, 0);
+        moveRight = false;
+    }
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -39,10 +50,11 @@ public class EnemyPatrol : MonoBehaviour
     void Update()
     {
         if (Vector2.Distance(transform.position, patrolPoint.position) < patrolDistance && angry == false)
-        { 
+        {
             patrol = true;
         }
-        if (Vector2.Distance(transform.position, player.position) < stopDistance) { 
+        if (Vector2.Distance(transform.position, player.position) < stopDistance)
+        {
             angry = true;
             patrol = false;
             goBack = false;
@@ -51,124 +63,61 @@ public class EnemyPatrol : MonoBehaviour
         {
             goBack = true;
             angry = false;
-         }
-   
+        }
+
 
         if (patrol == true)
-        {
             Patrol();
-        }
         else if (angry == true)
-        {
             Agr();
-        }
         else if (goBack == true)
-        {
             GoBack();
-        }
 
-<<<<<<< HEAD
-       
-         
-        if(gameObject.GetComponent<HealthBar>().GetHP() <= 0)
+        if (gameObject.GetComponent<HealthBar>().GetHP() <= 0)
             room.enemies.Remove(gameObject);
-=======
-        /*
-         
-             //когда враг умирает
-            Destroy(gameObject);
-            room.enemies.Remove(gameObject);
-        */
->>>>>>> master
     }
-    void Patrol() 
+    void Patrol()
     {
         RaycastHit2D gr = Physics2D.Raycast(wallDetect.position, Vector2.right, 0.05f);
         Collider2D[] colliders = Physics2D.OverlapCircleAll(wallDetect.position, 0.05f);
-        if (colliders.Length > 1 && colliders.All(x => !x.GetComponent<PlayerController>()))
+        if (colliders.Length > 1 && colliders.All(x => !x.GetComponent<PlayerController>()))//разворот
         {
             if (moveRight == true)
-            {
-                transform.eulerAngles = new Vector3(0, 180, 0);
-                moveRight = false;
-            }
+                MoveLeft();
             else
-            {
-                transform.eulerAngles = new Vector3(0, 0, 0);
-                moveRight = true;
-            }
+                MoveRight();
         }
         if (transform.position.x > patrolPoint.position.x + patrolDistance)
-        {
-            transform.eulerAngles = new Vector3(0, 180, 0);
-            moveRight = false;
-        }
+            MoveLeft();
         if (transform.position.x < patrolPoint.position.x - patrolDistance)
-        {
-            transform.eulerAngles = new Vector3(0, 0, 0);
-            moveRight = true;
-        }
-        
+            MoveRight();
+
         transform.Translate(Vector2.right * speed * Time.deltaTime);
     }
 
-    void Agr() 
+    void Agr()
     {
         if (player.position.x < transform.position.x && moveRight == true)
-        {
-            transform.eulerAngles = new Vector3(0, 180, 0);
-            moveRight = false;
-        }
+            MoveLeft();
         if (player.position.x > transform.position.x && moveRight == false)
-        {
-            transform.eulerAngles = new Vector3(0, 0, 0);
-            moveRight = true;
-        }
+            MoveRight();
         transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
     }
 
-    void GoBack() 
+    void GoBack()
     {
         if (patrolPoint.position.x < transform.position.x && moveRight == true)
-        {
-            transform.eulerAngles = new Vector3(0, 180, 0);
-            moveRight = false;
-        }
+            MoveLeft();
         if (patrolPoint.position.x > transform.position.x && moveRight == false)
-        {
-            transform.eulerAngles = new Vector3(0, 0, 0);
-            moveRight = true;
-        }
+            MoveRight();
         transform.position = Vector2.MoveTowards(transform.position, patrolPoint.position, speed * Time.deltaTime);
     }
-<<<<<<< HEAD
 
-    public void PushAway(Vector3 pushFrom, float pushPower) {
+    public void PushAway(Vector3 pushFrom, float pushPower)
+    {
         if (GetComponent<Rigidbody2D>() == null)
             return;
         Vector3 pushDirection = pushFrom - transform.position;
         GetComponent<Rigidbody2D>().AddForce(pushDirection * pushPower);
     }
 }
-=======
-    
-}
-/*{  //ПАТРУЛИРОВАНИЕ МЕЖДУ СТЕН
-        RaycastHit2D gr = Physics2D.Raycast(wallDetect.position, Vector2.right, 0.05f);
-        transform.Translate(Vector2.right * speed * Time.deltaTime);
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(wallDetect.position, 0.05f);
-        if (colliders.Length > 0 && colliders.All(x => !x.GetComponent<Player>()))
-        {
-            if (moveRight == true)
-            {
-                transform.eulerAngles = new Vector3(0, 180, 0);
-                moveRight = false;
-            }
-            else
-            {
-                transform.eulerAngles = new Vector3(0, 0, 0);
-                moveRight = true;
-            }
-        }
-    }*/
->>>>>>> master

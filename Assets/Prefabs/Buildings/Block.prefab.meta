@@ -1,13 +1,5 @@
 fileFormatVersion: 2
-<<<<<<< HEAD
 guid: f12eca31a88a07645a9661834cbfcd06
-=======
-<<<<<<< HEAD:Assets/LevelLoader.prefab.meta
-guid: a545a9b2f33137f409b8e97e6e36307e
-=======
-guid: f12eca31a88a07645a9661834cbfcd06
->>>>>>> master:Assets/Prefabs/Buildings/Block.prefab.meta
->>>>>>> master
 PrefabImporter:
   externalObjects: {}
   userData: 
