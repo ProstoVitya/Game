@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -20,6 +21,22 @@ public class PlayerController : MonoBehaviour
 
     private SpriteRenderer         sprite;
     private Animator               animator;
+=======
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    [SerializeField] private float speed = 3f;
+    [SerializeField] private float jumpForce = 15f;
+    private Rigidbody2D rb;
+    private bool isGrounded = false;
+    public Transform groundCheck;
+
+    private SpriteRenderer sprite;
+    private Animator animator;
+>>>>>>> master
 
     void Start()
     {
@@ -42,12 +59,15 @@ public class PlayerController : MonoBehaviour
             Run();
         if (Input.GetButtonDown("Jump") && isGrounded)
             Jump();
+<<<<<<< HEAD
         if (Input.GetKeyDown(KeyCode.Mouse0) && timeBtwAttack <= 0)
             Attack();
         else
         {
             timeBtwAttack -= Time.deltaTime;
         }
+=======
+>>>>>>> master
     }
 
     private void Run()
@@ -55,11 +75,16 @@ public class PlayerController : MonoBehaviour
         if(isGrounded)
             animator.SetInteger("State", 2);
         sprite.flipX = Input.GetAxis("Horizontal") < 0.0f;
+<<<<<<< HEAD
         onRight = Input.GetAxis("Horizontal") > 0.0f;
         Vector3 dir = transform.right * Input.GetAxis("Horizontal");
         transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
         attackPos.transform.position = (onRight) ? new Vector2(transform.position.x + 0.75f, transform.position.y)
                                                  : new Vector2(transform.position.x - 0.75f, transform.position.y);
+=======
+        Vector3 dir = transform.right * Input.GetAxis("Horizontal");
+        transform.position = Vector3.MoveTowards(transform.position, transform.position + dir, speed * Time.deltaTime);
+>>>>>>> master
     }
 
     private void Jump()
@@ -73,6 +98,7 @@ public class PlayerController : MonoBehaviour
         isGrounded = colliders.Length > 2;
     }
 
+<<<<<<< HEAD
     private void Attack()
     {
             Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackPos.position, attackRange, whatIsEnemies);
@@ -90,4 +116,19 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackPos.position, attackRange);
     }
+=======
+    /*
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+            isGrounded = true;
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Ground")
+            isGrounded = false;
+    }
+    */
+>>>>>>> master
 }

@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/PauseMenu.prefab.meta
 guid: 44b4e56354650b246a943e335886e091
+=======
+guid: 79930d0db65fe4f4383228373296b831
+>>>>>>> master:Assets/Prefabs/Buildings/Ladder.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

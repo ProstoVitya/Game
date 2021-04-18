@@ -1,4 +1,5 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: fe5abeadcbe591e4fa9107fbc02f3998
 timeCreated: 1493304330
 licenseType: Store
@@ -160,6 +161,32 @@ PluginImporter:
         settings:
           CompileFlags: 
           FrameworkDependencies: 
+=======
+guid: 32d62d56d1f6bd145978bc1a8859f9d0
+PluginImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  iconMap: {}
+  executionOrder: {}
+  defineConstraints: []
+  isPreloaded: 0
+  isOverridable: 0
+  isExplicitlyReferenced: 0
+  validateReferences: 1
+  platformData:
+  - first:
+      Any: 
+    second:
+      enabled: 0
+      settings: {}
+  - first:
+      Editor: Editor
+    second:
+      enabled: 1
+      settings:
+        CPU: x86_64
+        DefaultValueInitialized: true
+>>>>>>> master
   userData: 
   assetBundleName: 
   assetBundleVariant: 

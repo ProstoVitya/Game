@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RoomVariants : MonoBehaviour
 {
+<<<<<<< HEAD
     public GameObject[]     topRooms;
     public GameObject[]     bottomRooms;
     public GameObject[]     leftRooms;
@@ -12,4 +13,10 @@ public class RoomVariants : MonoBehaviour
     public GameObject       closedRoom;
 
     public List<GameObject> rooms;
+=======
+    public GameObject[] topRooms;
+    public GameObject[] bottomRooms;
+    public GameObject[] leftRooms;
+    public GameObject[] rightRooms;
+>>>>>>> master
 }

@@ -1,4 +1,5 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: cad92998c5182496e8b989b406d9f156
 folderAsset: yes
 timeCreated: 1503666365
@@ -7,3 +8,12 @@ DefaultImporter:
   userData:
   assetBundleName:
   assetBundleVariant:
+=======
+guid: b08442b9e18b736409bd681a1d8e6ad2
+folderAsset: yes
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+>>>>>>> master

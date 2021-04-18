@@ -67,10 +67,19 @@ public class EnemyPatrol : MonoBehaviour
             GoBack();
         }
 
+<<<<<<< HEAD
        
          
         if(gameObject.GetComponent<HealthBar>().GetHP() <= 0)
             room.enemies.Remove(gameObject);
+=======
+        /*
+         
+             //когда враг умирает
+            Destroy(gameObject);
+            room.enemies.Remove(gameObject);
+        */
+>>>>>>> master
     }
     void Patrol() 
     {
@@ -132,6 +141,7 @@ public class EnemyPatrol : MonoBehaviour
         }
         transform.position = Vector2.MoveTowards(transform.position, patrolPoint.position, speed * Time.deltaTime);
     }
+<<<<<<< HEAD
 
     public void PushAway(Vector3 pushFrom, float pushPower) {
         if (GetComponent<Rigidbody2D>() == null)
@@ -140,3 +150,25 @@ public class EnemyPatrol : MonoBehaviour
         GetComponent<Rigidbody2D>().AddForce(pushDirection * pushPower);
     }
 }
+=======
+    
+}
+/*{  //ПАТРУЛИРОВАНИЕ МЕЖДУ СТЕН
+        RaycastHit2D gr = Physics2D.Raycast(wallDetect.position, Vector2.right, 0.05f);
+        transform.Translate(Vector2.right * speed * Time.deltaTime);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(wallDetect.position, 0.05f);
+        if (colliders.Length > 0 && colliders.All(x => !x.GetComponent<Player>()))
+        {
+            if (moveRight == true)
+            {
+                transform.eulerAngles = new Vector3(0, 180, 0);
+                moveRight = false;
+            }
+            else
+            {
+                transform.eulerAngles = new Vector3(0, 0, 0);
+                moveRight = true;
+            }
+        }
+    }*/
+>>>>>>> master
