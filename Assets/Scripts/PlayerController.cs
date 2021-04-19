@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float speed = 3f;
     [SerializeField] private float verticalSpeed = 5f;
     [SerializeField] private float jumpForce = 15f;
+    public PauseMenu pa;
     private float gravityScale = 5f;
     private bool isGrounded = false;
     private bool onRight = true;
@@ -40,6 +41,10 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        if (pa.gameIsPaused == true)
+        {
+            return;
+        }
         CheckGround();
         if (Input.GetButtonDown("Fire1")&&!isAttacking&&isGrounded)
             Attack();
@@ -79,7 +84,6 @@ public class PlayerController : MonoBehaviour
     }
     private void Jump()
     {
-     
         rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
     }
     
