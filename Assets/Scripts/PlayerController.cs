@@ -12,8 +12,6 @@ public class PlayerController : MonoBehaviour
     private bool inCollWLadder = false;
     public Transform groundCheck;
     private Vector2 moveVector;
-    
-
     [Header("Attack Patameters")]
     public Transform attackPos;
     public LayerMask Enemies;
@@ -81,6 +79,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Jump()
     {
+     
         rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
     }
     
