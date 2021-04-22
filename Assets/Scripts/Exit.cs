@@ -16,7 +16,7 @@ public class Exit : MonoBehaviour
         if (collision.CompareTag("Ladder") && block) {
             Destroy(collision.gameObject);
         }
-        Destroy(wallSpawner.gameObject, 0.9f);
+       // Destroy(wallSpawner.gameObject, 0.9f);
         Destroy(gameObject, 1f);
     }
 }

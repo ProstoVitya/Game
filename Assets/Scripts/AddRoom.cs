@@ -7,6 +7,7 @@ public class AddRoom : MonoBehaviour
     [Header("Enemies")]
     public GameObject[] enemyTypes;
     public Transform[] spawners;
+    public Door[] doors;
 
     [Header("Bonuses")]
     public GameObject[] bonusTypes;
@@ -25,8 +26,11 @@ public class AddRoom : MonoBehaviour
     {
         if (collision.CompareTag("Player") && !spawned) {
             spawned = true;
+            //закрываются двери
+            foreach (Door door in doors)
+                door.Close();
 
-            foreach (Transform spawner in spawners) {
+                foreach (Transform spawner in spawners) {
                 int rand = Random.Range(0, 11);
                 if (rand < 10)
                 {
@@ -34,7 +38,7 @@ public class AddRoom : MonoBehaviour
                     GameObject enemy = Instantiate(emnemyType, spawner.position, Quaternion.identity);
                 }
                 else {
-                    //Появляется бонус
+                    //появляется бонус
                 }
             }
             StartCoroutine(CheckEnemies());
@@ -44,6 +48,8 @@ public class AddRoom : MonoBehaviour
     IEnumerator CheckEnemies() {
         yield return new WaitForSeconds(1f);
         yield return new WaitUntil(() => enemies.Count == 0);
-        //Появляется бонус
+        //открываются двери
+        foreach (Door door in doors)
+            door.Open();
     }
 }

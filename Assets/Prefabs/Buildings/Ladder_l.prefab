@@ -337,7 +337,7 @@ GameObject:
   - component: {fileID: 8226423406219885056}
   m_Layer: 0
   m_Name: Ladder_l
-  m_TagString: Ladder
+  m_TagString: Ladder_l
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -42,6 +42,9 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        if (gameUI.gameIsPaused)
+            return;
+
         CheckGround();
         if (Input.GetButtonDown("Fire1")&&!isAttacking&&isGrounded)
             Attack();
@@ -115,7 +118,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Ladder"))
+        if (collision.gameObject.CompareTag("Ladder") || collision.gameObject.CompareTag("Ladder_l"))
         {
             rb.gravityScale = 0;
             inCollWLadder = true;

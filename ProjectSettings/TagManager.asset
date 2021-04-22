@@ -9,6 +9,7 @@ TagManager:
   - Block
   - RoomPoint
   - Rooms
+  - Ladder_l
   layers:
   - Default
   - TransparentFX
