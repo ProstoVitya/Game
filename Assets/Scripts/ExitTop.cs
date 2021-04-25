@@ -7,6 +7,9 @@ public class ExitTop : MonoBehaviour
     public GameObject wall;
     public Transform wallSpawner;
     private bool block = false;
+    public GameObject door;
+    public GameObject ladder;
+
 
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -15,12 +18,17 @@ public class ExitTop : MonoBehaviour
             Instantiate(wall, wallSpawner);
             block = true;
         }
-        if ((collision.CompareTag("Ladder") || collision.CompareTag("Ladder_l")) && block)
+        if (collision.CompareTag("Ladder_l") && block)
         {
             Destroy(collision.gameObject);
+            Destroy(gameObject);
         }
-   
-        //Destroy(wallSpawner.gameObject, 0.9f);
-        Destroy(gameObject, 1f);
+
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Door") && door == null)
+            door = collision.gameObject;
     }
 }

@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     private bool inCollWLadder = false;
     public Transform groundCheck;
     private Vector2 moveVector;
-    
+
 
     [Header("Attack Patameters")]
     public Transform attackPos;
@@ -42,11 +42,8 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
-        if (gameUI.gameIsPaused)
-            return;
-
         CheckGround();
-        if (Input.GetButtonDown("Fire1")&&!isAttacking&&isGrounded)
+        if (Input.GetButtonDown("Fire1") && !isAttacking && isGrounded)
             Attack();
         if (isGrounded && !isAttacking)
         {
@@ -79,14 +76,14 @@ public class PlayerController : MonoBehaviour
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, 0.1f);
         isGrounded = (colliders.Length > 2) && !inCollWLadder;
-        if (!isGrounded&&!inCollWLadder)
+        if (!isGrounded && !inCollWLadder)
             animator.SetInteger("State", 3);
     }
     private void Jump()
     {
         rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
     }
-    
+
     private void Attack()
     {
         isAttacking = true;
@@ -98,10 +95,7 @@ public class PlayerController : MonoBehaviour
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(attackPos.position, attackRange, Enemies);
         for (int i = 0; i < colliders.Length; ++i)
-        {
-            colliders[i].GetComponent<HealthBar>().GetDamage(damage);
-            colliders[i].GetComponent<Rigidbody2D>().AddForce(transform.right * attackForce, ForceMode2D.Impulse);
-        }
+            colliders[i].GetComponent<EnemyPatrol>().GetDamage(damage);
     }
     private IEnumerator AttackTime()
     {
@@ -135,30 +129,4 @@ public class PlayerController : MonoBehaviour
         inCollWLadder = false;
     }
 
-}/* private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ladder"))
-        {
-            if (Input.GetButton("Vertical"))
-            {
-                onLadder = true;
-                animator.SetInteger("State", 4);                
-            }
-            moveVector.y = Input.GetAxisRaw("Vertical");
-            animator.SetFloat("moveY", Mathf.Abs(moveVector.y));
-            if (onLadder)
-            {
-                rb.gravityScale = 0;
-                rb.velocity = new Vector2(rb.velocity.x, moveVector.y * verticalSpeed);
-            }
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ladder")&&onLadder)
-        {
-            rb.gravityScale = gravityScale;
-            onLadder = false;
-        }
-    }*/
+}

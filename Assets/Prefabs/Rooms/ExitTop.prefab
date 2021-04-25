@@ -94,3 +94,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wall: {fileID: 479968055282564893, guid: fc62e81d0ca7199419b17550b8bd0392, type: 3}
   wallSpawner: {fileID: 0}
+  door: {fileID: 0}
+  ladder: {fileID: 8226423406219885070, guid: 6e8ab5f0372c77c4486dc739087c4e3a, type: 3}

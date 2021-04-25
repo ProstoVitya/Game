@@ -10,6 +10,7 @@ TagManager:
   - RoomPoint
   - Rooms
   - Ladder_l
+  - Door
   layers:
   - Default
   - TransparentFX

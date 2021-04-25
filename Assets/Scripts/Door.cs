@@ -12,12 +12,14 @@ public class Door : MonoBehaviour
     }
 
     public void Open() {
-        gameObject.GetComponent<BoxCollider2D>().enabled = false;
+        gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
         animator.SetInteger("State", 0);
     }
 
     public void Close() {
-        gameObject.GetComponent<BoxCollider2D>().enabled = true;
+        gameObject.GetComponent<BoxCollider2D>().isTrigger = false;
+
+        //gameObject.GetComponent<BoxCollider2D>().enabled = true;
         animator.SetInteger("State", 1);
     }
 }
