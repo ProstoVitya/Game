@@ -95,10 +95,7 @@ public class PlayerController : MonoBehaviour
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(attackPos.position, attackRange, Enemies);
         for (int i = 0; i < colliders.Length; ++i)
-        {
-            colliders[i].GetComponent<HealthBar>().GetDamage(damage);
-            colliders[i].GetComponent<Rigidbody2D>().AddForce(transform.right * attackForce, ForceMode2D.Impulse);
-        }
+            colliders[i].GetComponent<EnemyPatrol>().GetDamage(damage);
     }
     private IEnumerator AttackTime()
     {

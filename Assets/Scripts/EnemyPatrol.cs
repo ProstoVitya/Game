@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+
 public class EnemyPatrol : MonoBehaviour
 {
-    public float speed = 3f;
-    public float patrolDistance;
-    public Transform patrolPoint;
-    private bool moveRight = true;
-    private Vector2 dir = Vector2.right;
-    private Transform player;
-    public float stopDistance;
     private SpriteRenderer sprite;
-    public Transform wallDetect;
-    bool patrol = false;
-    bool angry = false;
-    bool goBack = false;
+    private Animator animator;
+    private Transform player;
+    public Transform patrolPoint;
+    
+    public float speed;
+    public float patrolDistance;        
+    public float stopDistance;
+    private float cooldownAttack=0.6f;
+    private float currentSpeed;
+    private bool moveRight = true;
+    private bool isAttacking = false;
+    public bool patrol = false;
+    public bool angry = false;
+    public bool goBack = false;
 
     private AddRoom room;
 
@@ -35,20 +39,15 @@ public class EnemyPatrol : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         sprite = GetComponent<SpriteRenderer>();
         room = GetComponentInParent<AddRoom>();
+        animator = GetComponent<Animator>();
+        currentSpeed = speed;
     }
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Player")
-        {
-            collision.gameObject.GetComponent<HealthBar>().GetDamage(10);
-        }
-
-    }
-
 
     // Update is called once per frame
     void Update()
     {
+        if (cooldownAttack > 0)
+            cooldownAttack -= Time.deltaTime;
         if (Vector2.Distance(transform.position, patrolPoint.position) < patrolDistance && angry == false)
         {
             patrol = true;
@@ -66,11 +65,11 @@ public class EnemyPatrol : MonoBehaviour
         }
 
 
-        if (patrol == true)
+        if (patrol == true&&!isAttacking)
             Patrol();
-        else if (angry == true)
+        else if (angry == true && !isAttacking)
             Agr();
-        else if (goBack == true)
+        else if (goBack == true && !isAttacking)
             GoBack();
 
         if (gameObject.GetComponent<HealthBar>().GetHP() <= 0)
@@ -78,21 +77,12 @@ public class EnemyPatrol : MonoBehaviour
     }
     void Patrol()
     {
-        RaycastHit2D gr = Physics2D.Raycast(wallDetect.position, Vector2.right, 0.05f);
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(wallDetect.position, 0.05f);
-        if (colliders.Length > 1 && colliders.All(x => !x.GetComponent<PlayerController>()))//разворот
-        {
-            if (moveRight == true)
-                MoveLeft();
-            else
-                MoveRight();
-        }
         if (transform.position.x > patrolPoint.position.x + patrolDistance)
             MoveLeft();
         if (transform.position.x < patrolPoint.position.x - patrolDistance)
             MoveRight();
 
-        transform.Translate(Vector2.right * speed * Time.deltaTime);
+        transform.Translate(Vector2.right * currentSpeed * Time.deltaTime);
     }
 
     void Agr()
@@ -101,7 +91,7 @@ public class EnemyPatrol : MonoBehaviour
             MoveLeft();
         if (player.position.x > transform.position.x && moveRight == false)
             MoveRight();
-        transform.position = Vector2.MoveTowards(transform.position, player.position, speed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, player.position, currentSpeed * Time.deltaTime);
     }
 
     void GoBack()
@@ -110,14 +100,48 @@ public class EnemyPatrol : MonoBehaviour
             MoveLeft();
         if (patrolPoint.position.x > transform.position.x && moveRight == false)
             MoveRight();
-        transform.position = Vector2.MoveTowards(transform.position, patrolPoint.position, speed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(transform.position, patrolPoint.position, currentSpeed * Time.deltaTime);
     }
 
-    public void PushAway(Vector3 pushFrom, float pushPower)
+    public void GetDamage(int damage)
     {
-        if (GetComponent<Rigidbody2D>() == null)
-            return;
-        Vector3 pushDirection = pushFrom - transform.position;
-        GetComponent<Rigidbody2D>().AddForce(pushDirection * pushPower);
+        currentSpeed = 0.6f;
+        GetComponent<HealthBar>().GetDamage(damage);
+        StartCoroutine(StopTime());
+    }
+    private IEnumerator StopTime()
+    {
+        yield return new WaitForSeconds(0.5f);
+        currentSpeed = speed;
+    }
+    private void OnTriggerStay2D(Collider2D collision) {
+        if (collision.gameObject.CompareTag("Player")) {
+            if (!isAttacking && cooldownAttack <= 0)
+            {
+                isAttacking = true;
+                animator.SetFloat("animChance", Random.Range(0.0f, 1.0f));
+                animator.SetBool("isAttacking", isAttacking);
+
+                StartCoroutine(AttackTime());
+            }
+        }
+        else if (!collision.gameObject.CompareTag("Ladder"))
+        {
+            if (moveRight == true)
+                MoveLeft();
+            else
+                MoveRight();
+        }
+    }
+    private void onAttack()
+    {
+        player.gameObject.GetComponent<HealthBar>().GetDamage(Random.Range(7,12));
+    }
+    private IEnumerator AttackTime()
+    {
+        yield return new WaitForSeconds(0.2f);
+        cooldownAttack = 0.6f;
+        isAttacking = false;
+        animator.SetBool("isAttacking", isAttacking);
     }
 }
