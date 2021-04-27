@@ -9,6 +9,8 @@ TagManager:
   - Block
   - RoomPoint
   - Rooms
+  - Ladder_l
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -18,9 +20,9 @@ TagManager:
   - UI
   - 
   - 
+  - Background
   - Enemies
-  - 
-  - 
+  - Ground
   - 
   - 
   - 
