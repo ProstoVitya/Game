@@ -110,6 +110,9 @@ MonoBehaviour:
   Enemies:
     serializedVersion: 2
     m_Bits: 512
+  Ground:
+    serializedVersion: 2
+    m_Bits: 1024
   attackRange: 0.34
   damage: 20
   attackForce: 5

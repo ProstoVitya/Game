@@ -10,7 +10,7 @@ public class EnemyPatrol : MonoBehaviour
     private Animator animator;
     private Transform player;
     public Transform patrolPoint;
-    
+
     public float speed;
     public float patrolDistance;        
     public float stopDistance;
@@ -22,7 +22,7 @@ public class EnemyPatrol : MonoBehaviour
     public bool angry = false;
     public bool goBack = false;
 
-    private AddRoom room;
+    
 
     void MoveRight()
     {
@@ -38,7 +38,7 @@ public class EnemyPatrol : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         sprite = GetComponent<SpriteRenderer>();
-        room = GetComponentInParent<AddRoom>();
+        
         animator = GetComponent<Animator>();
         currentSpeed = speed;
     }
@@ -65,15 +65,14 @@ public class EnemyPatrol : MonoBehaviour
         }
 
 
-        if (patrol == true&&!isAttacking)
+        if (patrol == true && !isAttacking)
             Patrol();
         else if (angry == true && !isAttacking)
             Agr();
         else if (goBack == true && !isAttacking)
             GoBack();
 
-        if (gameObject.GetComponent<HealthBar>().GetHP() <= 0)
-            room.enemies.Remove(gameObject);
+       
     }
     void Patrol()
     {
@@ -125,7 +124,7 @@ public class EnemyPatrol : MonoBehaviour
                 StartCoroutine(AttackTime());
             }
         }
-        else if (!collision.gameObject.CompareTag("Ladder"))
+        else if (!collision.isTrigger)
         {
             if (moveRight == true)
                 MoveLeft();

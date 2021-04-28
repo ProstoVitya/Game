@@ -14,11 +14,10 @@ public class AddRoom : MonoBehaviour
     [Header("Bonuses")]
     public GameObject[] bonusTypes;
 
-    [HideInInspector] public List<GameObject> enemies;
+    public List<GameObject> enemies;
 
     private RoomVariants variants;
-    private bool spawned;
-    private bool playerInRoom;
+    public bool spawned;
 
     private void Start()
     {
@@ -29,7 +28,6 @@ public class AddRoom : MonoBehaviour
     {
         if (collision.CompareTag("Player") && !spawned) {
             spawned = true;
-            playerInRoom = true;
 
             foreach (Transform spawner in spawners) {
                 int rand = Random.Range(0, 11);
@@ -37,6 +35,8 @@ public class AddRoom : MonoBehaviour
                 {
                     GameObject emnemyType = enemyTypes[Random.Range(0, enemyTypes.Length)];
                     GameObject enemy = Instantiate(emnemyType, spawner.position, Quaternion.identity);
+                    enemy.transform.parent = transform;
+                    enemies.Add(enemy);
                     Destroy(spawner.gameObject);
                 }
                 else {
@@ -44,8 +44,17 @@ public class AddRoom : MonoBehaviour
                 }
             }
             //закрываются двери
-            /*foreach (GameObject exit in exits)
-                exit.GetComponent<Exit>().door.GetComponent<Door>().Close();*/
+            foreach (GameObject exit in exits) {
+                if (exit != null)
+                {
+                    if (exit.TryGetComponent(out Exit exit0))
+                        exit0.door.GetComponent<Door>().Close();
+                    else if (exit.TryGetComponent(out ExitTop exittop))
+                        exittop.door.GetComponent<Door>().Close();
+                }
+                
+            }
+                
             StartCoroutine(CheckEnemies());
         }
     }
@@ -54,7 +63,13 @@ public class AddRoom : MonoBehaviour
         yield return new WaitForSeconds(1f);
         yield return new WaitUntil(() => enemies.Count == 0);
         //открываются двери
-        foreach (GameObject exit in exits)
-            exit.GetComponent<Exit>().door.GetComponent<Door>().Open();
+        foreach (GameObject exit in exits) {
+            if (exit != null)
+                if (exit.TryGetComponent(out Exit exit0))
+                    exit0.door.GetComponent<Door>().Open();
+                else if (exit.TryGetComponent(out ExitTop exittop))
+                    exittop.door.GetComponent<Door>().Open();
+        }
+            
     }
 }

@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     [Header("Attack Patameters")]
     public Transform attackPos;
     public LayerMask Enemies;
+    public LayerMask Ground;
     private bool isAttacking = false;
     public float attackRange;
     public int damage;
@@ -74,8 +75,8 @@ public class PlayerController : MonoBehaviour
 
     private void CheckGround()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, 0.1f);
-        isGrounded = (colliders.Length > 2) && !inCollWLadder;
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, 0.1f,Ground);
+        isGrounded = (colliders.Length > 0) && !inCollWLadder;
         if (!isGrounded && !inCollWLadder)
             animator.SetInteger("State", 3);
     }
@@ -95,6 +96,7 @@ public class PlayerController : MonoBehaviour
     {
         Collider2D[] colliders = Physics2D.OverlapCircleAll(attackPos.position, attackRange, Enemies);
         for (int i = 0; i < colliders.Length; ++i)
+            if(!colliders[i].isTrigger)
             colliders[i].GetComponent<EnemyPatrol>().GetDamage(damage);
     }
     private IEnumerator AttackTime()
