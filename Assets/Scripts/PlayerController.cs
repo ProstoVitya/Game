@@ -149,7 +149,7 @@ public class PlayerController : MonoBehaviour
 
         if (collision.CompareTag("Weapon") && weaponsCount < 3)
         {
-            weaponAnim.SetInteger("WeaponsCount", ++weaponsCount);
+            weaponAnim.SetInteger("weaponsCount", ++weaponsCount);
             Destroy(collision.gameObject);
         }
 
