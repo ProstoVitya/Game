@@ -1,31 +1,39 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     [Header("Move Patameters")]
-    [SerializeField] private float speed = 3f;
+    [SerializeField] private float speed         = 3f;
     [SerializeField] private float verticalSpeed = 5f;
-    [SerializeField] private float jumpForce = 15f;
-    private float gravityScale = 5f;
-    private bool isGrounded = false;
-    private bool onRight = true;
-    private bool inCollWLadder = false;
-    public Transform groundCheck;
-    private Vector2 moveVector;
-
+    [SerializeField] private float jumpForce     = 15f;
+    private float                  gravityScale  = 5f;
+    private bool                   isGrounded    = false;
+    private bool                   onRight       = true;
+    private bool                   inCollWLadder = false;
+    public Transform               groundCheck;
+    private Vector2                moveVector;
 
     [Header("Attack Patameters")]
-    public Transform attackPos;
-    public LayerMask Enemies;
-    public LayerMask Ground;
-    private bool isAttacking = false;
-    public float attackRange;
-    public int damage;
-    public float attackForce;
+    public Transform               attackPos;
+    public LayerMask               Enemies;
+    public LayerMask               Ground;
+    private bool                   isAttacking   = false;
+    public float                   attackRange;
+    public int                     damage;
+    public float                   attackForce;
 
-    private Rigidbody2D rb;
-    private SpriteRenderer sprite;
-    private Animator animator;
+    [Header("Inventory")]
+    private int                    potionsCount  = 3;
+    public Animator                potionAnim;
+    private int                    weaponsCount  = 1;
+    public Animator                weaponAnim;
+    public bool                    hasKey        = false;
+    public Animator                keyAnim;
+
+    private Rigidbody2D            rb;
+    private SpriteRenderer         sprite;
+    private Animator               animator;
 
     void Start()
     {
@@ -53,6 +61,15 @@ public class PlayerController : MonoBehaviour
                 animator.SetInteger("State", 2);
             if (Input.GetButtonDown("Jump") && isGrounded)
                 Jump();
+        }
+        if (Input.GetKeyDown(KeyCode.Q) && potionsCount > 0 /*&& хп < max*/) { 
+            potionAnim.SetInteger("Count", --potionsCount);
+            //увеличить хп
+        }
+        if (Input.GetButtonDown("Fire2") && weaponsCount > 0)
+        {
+            weaponAnim.SetInteger("weaponsCount", --weaponsCount);
+            //выстрелить
         }
 
     }
@@ -122,6 +139,25 @@ public class PlayerController : MonoBehaviour
             moveVector.y = Input.GetAxisRaw("Vertical");
             animator.SetFloat("moveY", Mathf.Abs(moveVector.y));
             rb.velocity = new Vector2(rb.velocity.x, moveVector.y * verticalSpeed);
+        }
+
+        if (collision.CompareTag("HealthPotion") && potionsCount < 3)
+        {
+            potionAnim.SetInteger("Count", ++potionsCount);
+            Destroy(collision.gameObject);
+        }
+
+        if (collision.CompareTag("Weapon") && weaponsCount < 3)
+        {
+            weaponAnim.SetInteger("WeaponsCount", ++weaponsCount);
+            Destroy(collision.gameObject);
+        }
+
+        if (collision.CompareTag("Key"))
+        {
+            hasKey = true;
+            keyAnim.SetBool("hasKey", true);
+            Destroy(collision.gameObject);
         }
     }
 
