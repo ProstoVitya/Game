@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class scroll : MonoBehaviour
+public class Scroll : MonoBehaviour
 {
     private float startPos1,startPos2, length,hight;
     public GameObject camera;
@@ -24,7 +24,7 @@ public class scroll : MonoBehaviour
         float dist2 = camera.transform.position.y * paralaxEffect;
 
         // двигаем фон с поправкой на paralaxEffect
-        transform.position = new Vector3(startPos1 + dist, startPos2+dist2, transform.position.z);
+        transform.position = new Vector3(startPos1 + dist, startPos2+dist2, 1);
 
         // если камера перескочила спрайт, то меняем startPos
         if (temp > startPos1 + length)

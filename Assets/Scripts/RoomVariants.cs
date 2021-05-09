@@ -8,8 +8,9 @@ public class RoomVariants : MonoBehaviour
     public GameObject[]     bottomRooms;
     public GameObject[]     leftRooms;
     public GameObject[]     rightRooms;
-
     public GameObject       closedRoom;
 
-    public List<GameObject> rooms;
+    public GameObject       key;
+
+    [HideInInspector] public List<GameObject> rooms;
 }

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class AddRoom : MonoBehaviour
 {
+    [Header("Exits")]
+    public GameObject[] exits;
+
     [Header("Enemies")]
     public GameObject[] enemyTypes;
     public Transform[] spawners;
@@ -11,14 +14,19 @@ public class AddRoom : MonoBehaviour
     [Header("Bonuses")]
     public GameObject[] bonusTypes;
 
-    [HideInInspector] public List<GameObject> enemies;
+    public List<GameObject> enemies;
 
     private RoomVariants variants;
-    private bool spawned;
+    public bool spawned;
+
+    private void Awake ()
+    {
+        variants = GameObject.FindGameObjectWithTag("Rooms").GetComponent<RoomVariants>();
+    }
 
     private void Start()
     {
-        variants = GameObject.FindGameObjectWithTag("Rooms").GetComponent<RoomVariants>();
+        variants.rooms.Add(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -32,18 +40,40 @@ public class AddRoom : MonoBehaviour
                 {
                     GameObject emnemyType = enemyTypes[Random.Range(0, enemyTypes.Length)];
                     GameObject enemy = Instantiate(emnemyType, spawner.position, Quaternion.identity);
+                    enemy.transform.parent = transform;
+                    enemies.Add(enemy);
+                    Destroy(spawner.gameObject);
                 }
                 else {
-                    //Появляется бонус
+                    //появляется бонус
                 }
             }
+
+            foreach (GameObject exit in exits) {
+                if (exit != null)
+                {
+                    if (exit.TryGetComponent(out Exit exit0))
+                        exit0.door.GetComponent<Door>().Close();
+                    else if (exit.TryGetComponent(out ExitTop exittop))
+                        exittop.door.GetComponent<Door>().Close();
+                }
+                
+            }
+                
             StartCoroutine(CheckEnemies());
         }
     }
-
+    
     IEnumerator CheckEnemies() {
         yield return new WaitForSeconds(1f);
         yield return new WaitUntil(() => enemies.Count == 0);
-        //Появляется бонус
+        //открываются двери
+        foreach (GameObject exit in exits) {
+            if (exit != null)
+                if (exit.TryGetComponent(out Exit exit0))
+                    exit0.door.GetComponent<Door>().Open();
+                else if (exit.TryGetComponent(out ExitTop exittop))
+                    exittop.door.GetComponent<Door>().Open();
+        }            
     }
 }
