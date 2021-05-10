@@ -21,7 +21,11 @@ public class HealthBar : MonoBehaviour
             fill = currHP;
         }
     }
-
+    public void GetHeal(int healing) {
+        currHP += healing;
+        if (currHP > 100)
+            currHP = maxHP;
+    }
     public void GetDamage(int damage) {
         currHP -= damage;
         Destroy(Instantiate(bloodEffect, transform.position, Quaternion.identity), 1.5f);

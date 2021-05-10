@@ -11,6 +11,10 @@ TagManager:
   - Rooms
   - Ladder_l
   - Door
+  - Key
+  - Weapon
+  - HealthPotion
+  - Portal
   layers:
   - Default
   - TransparentFX

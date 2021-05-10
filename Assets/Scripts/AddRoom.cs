@@ -13,15 +13,21 @@ public class AddRoom : MonoBehaviour
 
     [Header("Bonuses")]
     public GameObject[] bonusTypes;
+    public Transform keySpawnPosition;
 
     public List<GameObject> enemies;
 
     private RoomVariants variants;
     public bool spawned;
 
-    private void Start()
+    private void Awake ()
     {
         variants = GameObject.FindGameObjectWithTag("Rooms").GetComponent<RoomVariants>();
+    }
+
+    private void Start()
+    {
+        variants.rooms.Add(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -40,10 +46,12 @@ public class AddRoom : MonoBehaviour
                     Destroy(spawner.gameObject);
                 }
                 else {
-                    //появляется бонус
+                    GameObject bonusType = bonusTypes[Random.Range(0, bonusTypes.Length)];
+                    Instantiate(bonusType, spawner.position, Quaternion.identity);
+                    Destroy(spawner.gameObject);
                 }
             }
-            //закрываются двери
+
             foreach (GameObject exit in exits) {
                 if (exit != null)
                 {
@@ -51,8 +59,7 @@ public class AddRoom : MonoBehaviour
                         exit0.door.GetComponent<Door>().Close();
                     else if (exit.TryGetComponent(out ExitTop exittop))
                         exittop.door.GetComponent<Door>().Close();
-                }
-                
+                }                
             }
                 
             StartCoroutine(CheckEnemies());
@@ -64,12 +71,12 @@ public class AddRoom : MonoBehaviour
         yield return new WaitUntil(() => enemies.Count == 0);
         //открываются двери
         foreach (GameObject exit in exits) {
-            if (exit != null)
+            if (exit != null) {
                 if (exit.TryGetComponent(out Exit exit0))
                     exit0.door.GetComponent<Door>().Open();
                 else if (exit.TryGetComponent(out ExitTop exittop))
                     exittop.door.GetComponent<Door>().Open();
-        }
-            
+            }
+        }            
     }
 }

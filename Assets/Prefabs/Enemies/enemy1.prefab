@@ -103,9 +103,6 @@ MonoBehaviour:
   speed: 2
   patrolDistance: 5
   stopDistance: 3
-  patrol: 0
-  angry: 0
-  goBack: 0
 --- !u!50 &3362928703255456332
 Rigidbody2D:
   serializedVersion: 4
@@ -172,7 +169,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.52301264, y: -0.46137887}
+  m_Offset: {x: 0.49463356, y: -0.45723182}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -183,7 +180,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.3832302, y: 0.3424542}
+  m_Size: {x: 0.2932949, y: 0.3341601}
   m_EdgeRadius: 0
 --- !u!95 &2692429424468260900
 Animator:
@@ -250,6 +247,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7892c3cc9ddd1284e8607675b53e29b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bonusTypes:
+  - {fileID: 6459407690461715657, guid: d913b239c87e6324cb6cfad275aee032, type: 3}
+  - {fileID: 6378483742813349290, guid: 4bbdb9e016b7fc14c9e1dc2f55ac0121, type: 3}
+  effectDrop: {fileID: 6772171526110430172, guid: 0ea6178984b325945aadabf1a2642a32,
+    type: 3}
 --- !u!114 &7246111446789129115
 MonoBehaviour:
   m_ObjectHideFlags: 0

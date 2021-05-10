@@ -1,37 +1,52 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 public class PlayerController : MonoBehaviour
 {
     [Header("Move Patameters")]
-    [SerializeField] private float speed = 3f;
+    [SerializeField] private float speed         = 3f;
     [SerializeField] private float verticalSpeed = 5f;
-    [SerializeField] private float jumpForce = 15f;
-    private float gravityScale = 5f;
-    private bool isGrounded = false;
-    private bool onRight = true;
-    private bool inCollWLadder = false;
-    public Transform groundCheck;
-    private Vector2 moveVector;
-
+    [SerializeField] private float jumpForce     = 15f;
+    private float                  gravityScale  = 5f;
+    private bool                   isGrounded    = false;
+    private bool                   onRight       = true;
+    private bool                   inCollWLadder = false;
+    public Transform               groundCheck;
+    private Vector2                moveVector;
 
     [Header("Attack Patameters")]
-    public Transform attackPos;
-    public LayerMask Enemies;
-    public LayerMask Ground;
-    private bool isAttacking = false;
-    public float attackRange;
-    public int damage;
-    public float attackForce;
+    public Transform               attackPos;
+    public LayerMask               Enemies;
+    public LayerMask               Ground;
+    private bool                   isAttacking   = false;
+    public float                   attackRange;
+    public int                     damage;
+    public float                   attackForce;
+    public GameObject              shuriken;
 
-    private Rigidbody2D rb;
-    private SpriteRenderer sprite;
-    private Animator animator;
+    [Header("Inventory")]
+    private int                    potionsCount  = 3;
+    public Animator                potionAnim;
+    private int                    weaponsCount  = 1;
+    public Animator                weaponAnim;
+    public bool                    hasKey        = false;
+    public Animator                keyAnim;
+
+    private Rigidbody2D            rb;
+    private HealthBar              healthbar;
+    private SpriteRenderer         sprite;
+    private Animator               animator;
+    public GameObject              teleportationEffect;  
+    public GameObject              effectBonus;
+    public GameObject              effectHealing;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        healthbar = GetComponent<HealthBar>();
     }
 
     void FixedUpdate()
@@ -53,6 +68,16 @@ public class PlayerController : MonoBehaviour
                 animator.SetInteger("State", 2);
             if (Input.GetButtonDown("Jump") && isGrounded)
                 Jump();
+        }
+        if (Input.GetKeyDown(KeyCode.Q) && potionsCount > 0 && healthbar.GetHP()< healthbar.maxHP) { 
+            potionAnim.SetInteger("Count", --potionsCount);
+            Instantiate(effectHealing, transform.position, Quaternion.identity);
+            healthbar.GetHeal(12);
+        }
+        if (Input.GetButtonDown("Fire2") && weaponsCount > 0)
+        {
+            weaponAnim.SetInteger("weaponsCount", --weaponsCount);
+            Instantiate(shuriken, attackPos.position, transform.rotation);
         }
 
     }
@@ -123,8 +148,45 @@ public class PlayerController : MonoBehaviour
             animator.SetFloat("moveY", Mathf.Abs(moveVector.y));
             rb.velocity = new Vector2(rb.velocity.x, moveVector.y * verticalSpeed);
         }
+        else if (collision.CompareTag("Portal"))
+        {
+            if (hasKey && Input.GetKeyDown(KeyCode.E)) {
+                hasKey = false;
+                keyAnim.SetBool("hasKey", false);
+                collision.GetComponent<Animator>().SetBool("isOpened", true);
+            } else if (collision.GetComponent<Animator>().GetBool("isOpened")&&Input.GetKeyDown(KeyCode.E))
+            {
+                teleportationEffect.SetActive(true);
+                StartCoroutine(Teleportation());
+            }
+        }
     }
-
+        private IEnumerator Teleportation()
+    {
+        yield return new WaitForSeconds(0.5f);
+        transform.position = new Vector2(-166.4f, -151.6f);
+        yield return new WaitForSeconds(1f);
+        teleportationEffect.SetActive(false);
+    }
+    private void OnTriggerEnter2D(Collider2D collision) {
+        if (collision.CompareTag("HealthPotion") && potionsCount < 3)
+        {
+            potionAnim.SetInteger("Count", ++potionsCount);
+            Instantiate(effectBonus, transform.position, Quaternion.identity);
+            Destroy(collision.transform.parent.gameObject);
+        }else if (collision.CompareTag("Weapon") && weaponsCount < 3)
+        {
+            weaponAnim.SetInteger("weaponsCount", ++weaponsCount);
+            Instantiate(effectBonus, transform.position, Quaternion.identity);
+            Destroy(collision.transform.parent.gameObject);
+        }else if (collision.CompareTag("Key"))
+        {
+            hasKey = true;
+            keyAnim.SetBool("hasKey", true);
+            Instantiate(effectBonus, transform.position, Quaternion.identity);
+            Destroy(collision.transform.parent.gameObject);
+        }
+    }
     private void OnTriggerExit2D(Collider2D collision)
     {
         rb.gravityScale = gravityScale;
