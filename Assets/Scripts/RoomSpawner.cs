@@ -32,22 +32,26 @@ public class RoomSpawner : MonoBehaviour
         if (!spawned) {
             switch (direction) {
                 case Direction.TOP:
-                    rand = (roomCount < MAX_ROOMS) ? Random.Range(0, variants.topRooms.Length - 1) : variants.topRooms.Length - 1;
+                    rand = (roomCount < MAX_ROOMS) ? Random.Range(0, variants.topRooms.Length - 2) :
+                                                     Random.Range(variants.topRooms.Length - 3, variants.topRooms.Length);
                     Instantiate(variants.topRooms[rand], transform.position, variants.topRooms[rand].transform.rotation);
                     break;
 
                 case Direction.BOTTOM:
-                    rand = (roomCount < MAX_ROOMS) ? Random.Range(0, variants.bottomRooms.Length - 1) : variants.bottomRooms.Length - 1;
+                    rand = (roomCount < MAX_ROOMS) ? Random.Range(0, variants.bottomRooms.Length - 2) :
+                                                     Random.Range(variants.bottomRooms.Length - 3, variants.bottomRooms.Length);
                     Instantiate(variants.bottomRooms[rand], transform.position, variants.bottomRooms[rand].transform.rotation);
                     break;
 
                 case Direction.LEFT:
-                    rand = (roomCount < MAX_ROOMS) ? Random.Range(0, variants.leftRooms.Length - 1) : variants.leftRooms.Length - 1;
+                    rand = (roomCount < MAX_ROOMS) ? Random.Range(0, variants.leftRooms.Length - 2) :
+                                                     Random.Range(variants.leftRooms.Length - 3, variants.leftRooms.Length);
                     Instantiate(variants.leftRooms[rand], transform.position, variants.leftRooms[rand].transform.rotation);                 
                     break;
 
                 case Direction.RIGHT:
-                    rand = (roomCount < MAX_ROOMS) ? Random.Range(0, variants.rightRooms.Length - 1) : variants.rightRooms.Length - 1;
+                    rand = (roomCount < MAX_ROOMS) ? Random.Range(0, variants.rightRooms.Length - 2) :
+                                                     Random.Range(variants.rightRooms.Length - 3, variants.rightRooms.Length);
                     Instantiate(variants.rightRooms[rand], transform.position, variants.rightRooms[rand].transform.rotation);
                     break;
             }
