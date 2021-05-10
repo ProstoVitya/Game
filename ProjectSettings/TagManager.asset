@@ -14,6 +14,7 @@ TagManager:
   - Key
   - Weapon
   - HealthPotion
+  - Portal
   layers:
   - Default
   - TransparentFX

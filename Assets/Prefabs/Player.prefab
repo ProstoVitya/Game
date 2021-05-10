@@ -113,9 +113,17 @@ MonoBehaviour:
   Ground:
     serializedVersion: 2
     m_Bits: 1024
-  attackRange: 0.34
+  attackRange: 0.36
   damage: 20
   attackForce: 5
+  shuriken: {fileID: 0}
+  potionAnim: {fileID: 0}
+  weaponAnim: {fileID: 0}
+  hasKey: 0
+  keyAnim: {fileID: 0}
+  teleportationEffect: {fileID: 0}
+  effectBonus: {fileID: 0}
+  effectHealing: {fileID: 0}
 --- !u!114 &1510419268448425644
 MonoBehaviour:
   m_ObjectHideFlags: 0

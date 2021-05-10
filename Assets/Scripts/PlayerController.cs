@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     public float                   attackRange;
     public int                     damage;
     public float                   attackForce;
+    public GameObject              shuriken;
 
     [Header("Inventory")]
     private int                    potionsCount  = 3;
@@ -32,14 +33,20 @@ public class PlayerController : MonoBehaviour
     public Animator                keyAnim;
 
     private Rigidbody2D            rb;
+    private HealthBar              healthbar;
     private SpriteRenderer         sprite;
     private Animator               animator;
+    public GameObject              teleportationEffect;  
+    public GameObject              effectBonus;
+    public GameObject              effectHealing;
+
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
         sprite = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponent<Animator>();
+        healthbar = GetComponent<HealthBar>();
     }
 
     void FixedUpdate()
@@ -62,14 +69,15 @@ public class PlayerController : MonoBehaviour
             if (Input.GetButtonDown("Jump") && isGrounded)
                 Jump();
         }
-        if (Input.GetKeyDown(KeyCode.Q) && potionsCount > 0 /*&& хп < max*/) { 
+        if (Input.GetKeyDown(KeyCode.Q) && potionsCount > 0 && healthbar.GetHP()< healthbar.maxHP) { 
             potionAnim.SetInteger("Count", --potionsCount);
-            //увеличить хп
+            Instantiate(effectHealing, transform.position, Quaternion.identity);
+            healthbar.GetHeal(12);
         }
         if (Input.GetButtonDown("Fire2") && weaponsCount > 0)
         {
             weaponAnim.SetInteger("weaponsCount", --weaponsCount);
-            //выстрелить
+            Instantiate(shuriken, attackPos.position, transform.rotation);
         }
 
     }
@@ -140,27 +148,45 @@ public class PlayerController : MonoBehaviour
             animator.SetFloat("moveY", Mathf.Abs(moveVector.y));
             rb.velocity = new Vector2(rb.velocity.x, moveVector.y * verticalSpeed);
         }
-
+        else if (collision.CompareTag("Portal"))
+        {
+            if (hasKey && Input.GetKeyDown(KeyCode.E)) {
+                hasKey = false;
+                keyAnim.SetBool("hasKey", false);
+                collision.GetComponent<Animator>().SetBool("isOpened", true);
+            } else if (collision.GetComponent<Animator>().GetBool("isOpened")&&Input.GetKeyDown(KeyCode.E))
+            {
+                teleportationEffect.SetActive(true);
+                StartCoroutine(Teleportation());
+            }
+        }
+    }
+        private IEnumerator Teleportation()
+    {
+        yield return new WaitForSeconds(0.5f);
+        transform.position = new Vector2(-166.4f, -151.6f);
+        yield return new WaitForSeconds(1f);
+        teleportationEffect.SetActive(false);
+    }
+    private void OnTriggerEnter2D(Collider2D collision) {
         if (collision.CompareTag("HealthPotion") && potionsCount < 3)
         {
             potionAnim.SetInteger("Count", ++potionsCount);
-            Destroy(collision.gameObject);
-        }
-
-        if (collision.CompareTag("Weapon") && weaponsCount < 3)
+            Instantiate(effectBonus, transform.position, Quaternion.identity);
+            Destroy(collision.transform.parent.gameObject);
+        }else if (collision.CompareTag("Weapon") && weaponsCount < 3)
         {
             weaponAnim.SetInteger("weaponsCount", ++weaponsCount);
-            Destroy(collision.gameObject);
-        }
-
-        if (collision.CompareTag("Key"))
+            Instantiate(effectBonus, transform.position, Quaternion.identity);
+            Destroy(collision.transform.parent.gameObject);
+        }else if (collision.CompareTag("Key"))
         {
             hasKey = true;
             keyAnim.SetBool("hasKey", true);
-            Destroy(collision.gameObject);
+            Instantiate(effectBonus, transform.position, Quaternion.identity);
+            Destroy(collision.transform.parent.gameObject);
         }
     }
-
     private void OnTriggerExit2D(Collider2D collision)
     {
         rb.gravityScale = gravityScale;

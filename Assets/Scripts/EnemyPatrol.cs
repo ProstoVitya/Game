@@ -18,9 +18,9 @@ public class EnemyPatrol : MonoBehaviour
     private float currentSpeed;
     private bool moveRight = true;
     private bool isAttacking = false;
-    public bool patrol = false;
-    public bool angry = false;
-    public bool goBack = false;
+    private bool patrol = false;
+    private bool angry = false;
+    private bool goBack = false;
 
     
 
