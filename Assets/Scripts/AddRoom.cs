@@ -20,7 +20,7 @@ public class AddRoom : MonoBehaviour
     private RoomVariants variants;
     public bool spawned;
 
-    private void Awake ()
+    private void Awake()
     {
         variants = GameObject.FindGameObjectWithTag("Rooms").GetComponent<RoomVariants>();
     }
@@ -32,10 +32,12 @@ public class AddRoom : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && !spawned) {
+        if (collision.CompareTag("Player") && !spawned)
+        {
             spawned = true;
 
-            foreach (Transform spawner in spawners) {
+            foreach (Transform spawner in spawners)
+            {
                 int rand = Random.Range(0, 11);
                 if (rand < 10)
                 {
@@ -45,38 +47,55 @@ public class AddRoom : MonoBehaviour
                     enemies.Add(enemy);
                     Destroy(spawner.gameObject);
                 }
-                else {
+                else
+                {
                     GameObject bonusType = bonusTypes[Random.Range(0, bonusTypes.Length)];
                     Instantiate(bonusType, spawner.position, Quaternion.identity);
                     Destroy(spawner.gameObject);
                 }
             }
 
-            foreach (GameObject exit in exits) {
+            foreach (GameObject exit in exits)
+            {
                 if (exit != null)
                 {
                     if (exit.TryGetComponent(out Exit exit0))
-                        exit0.door.GetComponent<Door>().Close();
+                    {
+                        if (exit0.door != null)
+                            exit0.door.GetComponent<Door>().Close();
+                    }
                     else if (exit.TryGetComponent(out ExitTop exittop))
-                        exittop.door.GetComponent<Door>().Close();
-                }                
+                    {
+                        if (exittop.door != null)
+                            exittop.door.GetComponent<Door>().Close();
+                    }
+                }
             }
-                
+
             StartCoroutine(CheckEnemies());
         }
     }
-    
-    IEnumerator CheckEnemies() {
+
+    IEnumerator CheckEnemies()
+    {
         yield return new WaitForSeconds(1f);
         yield return new WaitUntil(() => enemies.Count == 0);
         //открываются двери
-        foreach (GameObject exit in exits) {
-            if (exit != null) {
+        foreach (GameObject exit in exits)
+        {
+            if (exit != null)
+            {
                 if (exit.TryGetComponent(out Exit exit0))
-                    exit0.door.GetComponent<Door>().Open();
+                {
+                    if (exit0.door != null)
+                        exit0.door.GetComponent<Door>().Open();
+                }
                 else if (exit.TryGetComponent(out ExitTop exittop))
-                    exittop.door.GetComponent<Door>().Open();
+                {
+                    if (exittop.door != null)
+                        exittop.door.GetComponent<Door>().Open();
+                }
             }
-        }            
+        }
     }
 }

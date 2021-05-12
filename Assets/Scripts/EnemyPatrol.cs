@@ -10,19 +10,23 @@ public class EnemyPatrol : MonoBehaviour
     private Animator animator;
     private Transform player;
     public Transform patrolPoint;
+    public Transform groundCheck;
+    public LayerMask Ground;
 
     public float speed;
     public float patrolDistance;        
     public float stopDistance;
-    private float cooldownAttack=0.6f;
+    public float cooldownAttack=0.6f;
     private float currentSpeed;
     private bool moveRight = true;
     private bool isAttacking = false;
     private bool patrol = false;
     private bool angry = false;
     private bool goBack = false;
+    public bool isGround;
+    private bool isWaiting = false;
 
-    
+
 
     void MoveRight()
     {
@@ -34,6 +38,15 @@ public class EnemyPatrol : MonoBehaviour
         transform.eulerAngles = new Vector3(0, 180, 0);
         moveRight = false;
     }
+    
+        
+   
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(groundCheck.position, 0.1f);
+    }
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
@@ -42,23 +55,28 @@ public class EnemyPatrol : MonoBehaviour
         animator = GetComponent<Animator>();
         currentSpeed = speed;
     }
-
+    bool agrHeight()
+    {
+        return (-0.3f < (transform.position.y - player.position.y) && (transform.position.y - player.position.y) < 1.2f);
+    }
     // Update is called once per frame
     void Update()
     {
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, 0.1f, Ground);
+        isGround = colliders.Length > 0;
         if (cooldownAttack > 0)
             cooldownAttack -= Time.deltaTime;
-        if (Vector2.Distance(transform.position, patrolPoint.position) < patrolDistance && angry == false)
+        if (Mathf.Abs(transform.position.x - player.position.x) < patrolDistance && angry == false)
         {
             patrol = true;
         }
-        if (Vector2.Distance(transform.position, player.position) < stopDistance)
+        if ( Mathf.Abs(transform.position.x-player.position.x) < stopDistance&& agrHeight()&& isGround)
         {
             angry = true;
             patrol = false;
             goBack = false;
         }
-        if (Vector2.Distance(transform.position, player.position) > stopDistance)
+        if (Mathf.Abs(transform.position.x - player.position.x) > stopDistance || !agrHeight())
         {
             goBack = true;
             angry = false;
@@ -71,26 +89,42 @@ public class EnemyPatrol : MonoBehaviour
             Agr();
         else if (goBack == true && !isAttacking)
             GoBack();
-
-       
     }
     void Patrol()
     {
-        if (transform.position.x > patrolPoint.position.x + patrolDistance)
+        if (transform.position.x > patrolPoint.position.x + patrolDistance || (!isGround && moveRight))
             MoveLeft();
-        if (transform.position.x < patrolPoint.position.x - patrolDistance)
+        else if (transform.position.x < patrolPoint.position.x - patrolDistance ||(!isGround && !moveRight))
             MoveRight();
-
+        if (isWaiting)
+        {
+            isWaiting = false;
+            animator.SetBool("isWaiting", false);
+        }
         transform.Translate(Vector2.right * currentSpeed * Time.deltaTime);
     }
 
     void Agr()
     {
-        if (player.position.x < transform.position.x && moveRight == true)
-            MoveLeft();
-        if (player.position.x > transform.position.x && moveRight == false)
-            MoveRight();
-        transform.position = Vector2.MoveTowards(transform.position, player.position, currentSpeed * Time.deltaTime);
+        if (isGround)
+        {
+            if (player.position.x < transform.position.x && moveRight == true)
+                MoveLeft();
+            if (player.position.x > transform.position.x && moveRight == false)
+                MoveRight();
+            if (isWaiting)
+            {
+                isWaiting = false;
+                animator.SetBool("isWaiting", false);
+            }
+
+            transform.Translate(Vector2.right * currentSpeed * Time.deltaTime);
+        }
+        else
+        {
+            isWaiting = true;
+            animator.SetBool("isWaiting", true);           
+        }
     }
 
     void GoBack()
@@ -99,12 +133,17 @@ public class EnemyPatrol : MonoBehaviour
             MoveLeft();
         if (patrolPoint.position.x > transform.position.x && moveRight == false)
             MoveRight();
-        transform.position = Vector2.MoveTowards(transform.position, patrolPoint.position, currentSpeed * Time.deltaTime);
+        if (isWaiting)
+        {
+            isWaiting = false;
+            animator.SetBool("isWaiting", false);
+        }
+        transform.Translate(Vector2.right * currentSpeed * Time.deltaTime);
     }
 
     public void GetDamage(int damage)
     {
-        currentSpeed = 0.6f;
+        currentSpeed = 0.40f;
         GetComponent<HealthBar>().GetDamage(damage);
         StartCoroutine(StopTime());
     }
@@ -134,12 +173,12 @@ public class EnemyPatrol : MonoBehaviour
     }
     private void onAttack()
     {
-        player.gameObject.GetComponent<HealthBar>().GetDamage(Random.Range(7,12));
+        player.gameObject.GetComponent<HealthBar>().GetDamage(Random.Range(6,11));
     }
     private IEnumerator AttackTime()
     {
         yield return new WaitForSeconds(0.2f);
-        cooldownAttack = 0.6f;
+        cooldownAttack = 0.5f;
         isAttacking = false;
         animator.SetBool("isAttacking", isAttacking);
     }

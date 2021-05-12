@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     public GameObject              teleportationEffect;  
     public GameObject              effectBonus;
     public GameObject              effectHealing;
-
+    public gameUI gameUI;
 
     void Start()
     {
@@ -58,6 +58,8 @@ public class PlayerController : MonoBehaviour
     }
     void Update()
     {
+        if (gameUI.gameIsPaused == true)
+            return;
         CheckGround();
         if (Input.GetButtonDown("Fire1") && !isAttacking && isGrounded)
             Attack();
