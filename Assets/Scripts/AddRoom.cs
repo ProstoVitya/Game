@@ -5,49 +5,39 @@ using UnityEngine;
 public class AddRoom : MonoBehaviour
 {
     [Header("Exits")]
-    public GameObject[] exits; //пустые объекты выходов
+    public GameObject[] exits;
 
     [Header("Enemies")]
-    public GameObject[] enemyTypes; //типы врагов которые могут появиться в комнате
-    public Transform[] spawners; //места на карте, где могут появиться враги/бонусы
+    public GameObject[] enemyTypes;
+    public Transform[] spawners;
 
     [Header("Bonuses")]
-    public GameObject[] bonusTypes; //типы бонусов которые могут появиться в комнате
-    public Transform keySpawnPosition; //место где может появиться ключ
+    public GameObject[] bonusTypes;
+    public Transform keySpawnPosition;
 
-    public List<GameObject> enemies; //список врагов в одной комнате
+    public List<GameObject> enemies;
 
-    private RoomVariants variants; //массив вариантов комнат
-    public bool spawned; //показывает спавнились ли враги в комнате
+    private RoomVariants variants;
+    public bool spawned;
 
-    //метод запускается еще до Start()
-    //в ней задается массив комнат
     private void Awake()
     {
         variants = GameObject.FindGameObjectWithTag("Rooms").GetComponent<RoomVariants>();
     }
 
-    //запускается вначале работы скрипта
-    //появившаяся комната добавляется в массив
     private void Start()
     {
         variants.rooms.Add(gameObject);
     }
 
-    //метод активируется при соприкосновении коллайдеров
-    //проверяется имеет ли соприкасающийся объект тэг "Player" и заходил ли этот объект в нее уже
-    //если имеет и не заходил:
-    //1 - на каждом спавнере появляется враг/бонус с вероятностью 9/1
-    //2 - закрываются все двери, сосприкасающиеся с выходами из exits
-    //3 - запускается корутн CheckEnemies()
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && !spawned) {
+        if (collision.CompareTag("Player") && !spawned)
+        {
             spawned = true;
 
-            //1
-            foreach (Transform spawner in spawners) {
+            foreach (Transform spawner in spawners)
+            {
                 int rand = Random.Range(0, 11);
                 if (rand < 10)
                 {
@@ -57,15 +47,16 @@ public class AddRoom : MonoBehaviour
                     enemies.Add(enemy);
                     Destroy(spawner.gameObject);
                 }
-                else {
+                else
+                {
                     GameObject bonusType = bonusTypes[Random.Range(0, bonusTypes.Length)];
                     Instantiate(bonusType, spawner.position, Quaternion.identity);
                     Destroy(spawner.gameObject);
                 }
             }
 
-            //2
-            foreach (GameObject exit in exits) {
+            foreach (GameObject exit in exits)
+            {
                 if (exit != null)
                 {
                     if (exit.TryGetComponent(out Exit exit0))
@@ -78,24 +69,22 @@ public class AddRoom : MonoBehaviour
                         if (exittop.door != null)
                             exittop.door.GetComponent<Door>().Close();
                     }
-                }                
+                }
             }
-                
-            //3
+
             StartCoroutine(CheckEnemies());
         }
     }
 
-    //метод не дает коду продолжить работу пока:
-    //1 - не пройдет 1 секунда(чтобы успели появиться враги, если они появятся)
-    //2 - количество появившихся врагов в enemies != 0
-    //при выполнении условий открывавются двери, соприкасающиеся с выходами в комнате
-    IEnumerator CheckEnemies() {
-        yield return new WaitForSeconds(1f); //1
-        yield return new WaitUntil(() => enemies.Count == 0); //2
+    IEnumerator CheckEnemies()
+    {
+        yield return new WaitForSeconds(1f);
+        yield return new WaitUntil(() => enemies.Count == 0);
         //открываются двери
-        foreach (GameObject exit in exits) {
-            if (exit != null) {
+        foreach (GameObject exit in exits)
+        {
+            if (exit != null)
+            {
                 if (exit.TryGetComponent(out Exit exit0))
                 {
                     if (exit0.door != null)
@@ -107,6 +96,6 @@ public class AddRoom : MonoBehaviour
                         exittop.door.GetComponent<Door>().Open();
                 }
             }
-        }            
+        }
     }
 }

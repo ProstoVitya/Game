@@ -1397,6 +1397,16 @@ PrefabInstance:
       propertyPath: wallSpawner
       value: 
       objectReference: {fileID: 2236596241581314123}
+    - target: {fileID: 1051269856899155532, guid: 5e1b76b5c33e65844871bb320005a9bf,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.6468563
+      objectReference: {fileID: 0}
+    - target: {fileID: 1051269856899155532, guid: 5e1b76b5c33e65844871bb320005a9bf,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: 0.07342827
+      objectReference: {fileID: 0}
     - target: {fileID: 1051269856899155533, guid: 5e1b76b5c33e65844871bb320005a9bf,
         type: 3}
       propertyPath: m_RootOrder

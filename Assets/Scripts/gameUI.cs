@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class gameUI : MonoBehaviour
 {
-    public static bool gameIsPaused = false;
+    public  bool gameIsPaused = false;
     public GameObject  pauseMenuUI;
     public GameObject  DeathScreenUI;
 

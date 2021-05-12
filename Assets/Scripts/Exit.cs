@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-
+using System.Collections;
 public class Exit : MonoBehaviour
 {
     public GameObject wall;
@@ -7,7 +7,6 @@ public class Exit : MonoBehaviour
     private bool block = false;
     public GameObject door;
 
-   
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag("Block") && !block) {
