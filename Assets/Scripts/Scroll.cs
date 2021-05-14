@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Scroll : MonoBehaviour
 {
-    private float startPos1,startPos2, length,hight;
+    private float startPos1, startPos2, length, hight;
     public GameObject camera;
     public float paralaxEffect;
 

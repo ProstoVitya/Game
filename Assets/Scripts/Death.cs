@@ -5,10 +5,9 @@ using UnityEngine;
 //скрипт смерти врага
 public class Death : MonoBehaviour
 {
-    private AddRoom room; //комната в которой появляется враг (каждый привязывается к своей комнате)
-
+    private AddRoom     room; //комната в которой появляется враг (каждый привязывается к своей комнате)
     public GameObject[] bonusTypes; //бонусы которые могут выпасть при убийстве
-    public GameObject effectDrop; //эффект выпадения бонуса
+    public GameObject   effectDrop; //эффект выпадения бонуса
 
     //запускается в начале работы скрипта
     //объявляет переменную room

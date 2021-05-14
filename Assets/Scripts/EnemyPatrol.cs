@@ -1,15 +1,12 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
-
 
 public class EnemyPatrol : MonoBehaviour
 {
-    private SpriteRenderer sprite;
-    private Animator animator;
-    private Transform player;
-    public Transform patrolPoint;
+    private SpriteRenderer sprite; //спрайт врага
+    private Animator animator; //аниматор содержащий анимации атаки и ходьбы
+    private Transform player; //координаты игрока
+    public Transform patrolPoint; //точка к которой привязан объект
     public Transform groundCheck;
     public LayerMask Ground;
 
