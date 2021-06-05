@@ -1517,6 +1517,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 240029298282628467, guid: 82fa3319ec11df14abb0d685243162ea,
+        type: 3}
+      propertyPath: source
+      value: 
+      objectReference: {fileID: 2032362871}
+    - target: {fileID: 240029298282628467, guid: 82fa3319ec11df14abb0d685243162ea,
+        type: 3}
+      propertyPath: deathSound
+      value: 
+      objectReference: {fileID: 8300000, guid: de383b8ac7bee6a48a04cb2e2551efdd, type: 3}
     - target: {fileID: 240029298407365630, guid: 82fa3319ec11df14abb0d685243162ea,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target

@@ -7,7 +7,10 @@ public class gameUI : MonoBehaviour
     public bool        gameIsPaused     = false; //проверка остановки игры
     public GameObject  pauseMenuUI;              //меню паузы
     public GameObject  DeathScreenUI;            //экран смерти
-    public GameObject bossHP;
+    public GameObject  bossHP;                   //полоска хп для босса
+    public AudioSource source;                   //источник для звука смерти
+    public AudioClip   deathSound;               //звук смерти
+    public bool temp = false;
 
     //запускается в начале работы скрипта
     //ставит скорость игры в нормальное состояние
@@ -30,11 +33,16 @@ public class gameUI : MonoBehaviour
         }
 
         //если у объекта игрока 0хп вызывает экран смерти, отключает управление
-        if (GameObject.FindGameObjectWithTag("Player").GetComponent<HealthBar>().GetHP() <= 0) {
+        //останавливавет музыку игры, проигрывает звук смерти
+        if (GameObject.FindGameObjectWithTag("Player").GetComponent<HealthBar>().GetHP() <= 0 && !temp) {
+            temp = true;
             DeathScreenUI.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            Destroy(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>());
+            source.Stop();
+            source.PlayOneShot(deathSound);
+            Destroy(GameObject.FindGameObjectWithTag("Player"));
+            //Destroy(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>());
         }
 
     }
