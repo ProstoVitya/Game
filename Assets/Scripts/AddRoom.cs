@@ -21,6 +21,11 @@ public class AddRoom : MonoBehaviour
     private RoomVariants        variants;         //варианты комнат
     public bool                 spawned;          //проверка, заходил ли в комнату игрок
 
+    [Header("Bonuses")]
+    private AudioSource roomFX;
+    public AudioClip openDoor;
+    public AudioClip closeDoor;
+
     //метод вызывается перед Start()
     //объявление переменной вариантов комнат
     private void Awake()
@@ -33,6 +38,7 @@ public class AddRoom : MonoBehaviour
     private void Start()
     {
         variants.rooms.Add(gameObject);
+        roomFX = GetComponent<AudioSource>();
     }
 
     //метод вызывается в начале соприкосновения с объектом
@@ -81,7 +87,8 @@ public class AddRoom : MonoBehaviour
                     }
                 }
             }
-
+            if (roomFX != null)
+                roomFX.PlayOneShot(closeDoor);
             StartCoroutine(CheckEnemies()); //3
         }
     }
@@ -111,5 +118,7 @@ public class AddRoom : MonoBehaviour
                 }
             }
         }
+        if(roomFX != null)
+            roomFX.PlayOneShot(openDoor);
     }
 }

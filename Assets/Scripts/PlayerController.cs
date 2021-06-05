@@ -37,10 +37,23 @@ public class PlayerController : MonoBehaviour
     private HealthBar              healthbar;               //полоска хп
     private SpriteRenderer         sprite;                  //спрайт
     private Animator               animator;                //аниматор, включающий все анимации персонажа
+
+    [Header("UI")]
     public GameObject              teleportationEffect;     //эффект телепортации
     public GameObject              effectBonus;             //эффект бонуса
     public GameObject              effectHealing;           //эффект лечения
-    public gameUI gameUI;                                   //пользовательский интерфейс
+    public gameUI                  gameUI;                  //пользовательский интерфейс
+
+    [Header("Sounds")]
+    private AudioSource playerFX;
+    public AudioClip attackSound;
+    public AudioClip jumpSound;
+    public AudioClip shurikenSound;
+    public AudioClip potionSound;
+    public AudioClip takeSound;
+    public AudioClip climbSound;
+    public AudioClip[] runSounds;
+
 
 
     //метод вызывается в начале работы скрипта
@@ -52,7 +65,9 @@ public class PlayerController : MonoBehaviour
         sprite = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponent<Animator>();
         healthbar = GetComponent<HealthBar>();
+        playerFX = GetComponent<AudioSource>();
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     //метод вызывается каждые 0.02 секунды
@@ -88,12 +103,14 @@ public class PlayerController : MonoBehaviour
             potionAnim.SetInteger("Count", --potionsCount); //переключаем картинку на UI и уменьшаем количество зелий
             Instantiate(effectHealing, transform.position, Quaternion.identity); //создаем эффект лечения
             healthbar.GetHeal(12); //восстанавливаем 12 хп
+            playerFX.PlayOneShot(potionSound); //проигрываем звук
         }
         //если нажата кнопка броска сюрикена и их количество > 0
         if (Input.GetButtonDown("Fire2") && weaponsCount > 0)
         {
             weaponAnim.SetInteger("weaponsCount", --weaponsCount); //переключаем картинку на UI и уменьшаем количество сюрикенов
             Instantiate(shuriken, attackPos.position, transform.rotation); //создаем эффект броска
+            playerFX.PlayOneShot(shurikenSound); //проигрываем звук
         }
 
     }
@@ -132,6 +149,7 @@ public class PlayerController : MonoBehaviour
     //толкает лето ирока в направлении transform и силой jumpForce (ForceMode2D.Impulse - тип действующей силы)
     private void Jump()
     {
+        playerFX.PlayOneShot(jumpSound);
         rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
     }
 
@@ -140,7 +158,7 @@ public class PlayerController : MonoBehaviour
     {
         isAttacking = true;
         animator.SetInteger("State", 5); //переключение на анимацию ататки
-
+        playerFX.PlayOneShot(attackSound);
         StartCoroutine(AttackTime()); //капуск корутины
     }
 
@@ -154,6 +172,19 @@ public class PlayerController : MonoBehaviour
         for (int i = 0; i < colliders.Length; ++i)
             if(!colliders[i].isTrigger)
             colliders[i].GetComponent<EnemyPatrol>().GetDamage(damage);
+    }
+
+    //метод проигрывает случайный звук из массива звуков для бега
+    //использвуется в анимации бега на каждый кадр соприкосновения с землей
+    private void onRun() {
+        playerFX.PlayOneShot(runSounds[Random.Range(0, runSounds.Length)]);
+    }
+
+    //метод воспроизводит звук подъема по лестнице
+    //воспроизводится на каждое движение на лестнице
+    private void onLadder()
+    {
+        playerFX.PlayOneShot(climbSound);
     }
 
     //метод разрешает атаковать снова через 0.2 секунды
@@ -196,6 +227,7 @@ public class PlayerController : MonoBehaviour
                 keyAnim.SetBool("hasKey", false); //переключаем анимацию UI на отсутствие ключа
                 //переход в анимацию открытия портала
                 collision.GetComponent<Animator>().SetBool("isOpened", true);
+                collision.GetComponent<AudioSource>().Play();
                 //если портал открыт и нажата кнопка взаимодействия (Е)
             } else if (collision.GetComponent<Animator>().GetBool("isOpened")&&Input.GetKeyDown(KeyCode.E))
             {
@@ -223,10 +255,10 @@ public class PlayerController : MonoBehaviour
         //если игрок соприкасается с зельем лечения и имеет их меньше трех
         if (collision.CompareTag("HealthPotion") && potionsCount < 3)
         {
-
             potionAnim.SetInteger("Count", ++potionsCount); //переключение анимации UI и увеличение счетчика зелий
             Instantiate(effectBonus, transform.position, Quaternion.identity); //вызов эффекта подбора бонуса на месте игрока
             Destroy(collision.transform.parent.gameObject); //уничтожение бонуса
+            playerFX.PlayOneShot(takeSound);
         }
         //если игрок соприкасается с сюрикеном и имеет их меньше трех
         else if (collision.CompareTag("Weapon") && weaponsCount < 3)
@@ -234,12 +266,15 @@ public class PlayerController : MonoBehaviour
             weaponAnim.SetInteger("weaponsCount", ++weaponsCount); //переключение анимации UI и увеличение счетчика зелий
             Instantiate(effectBonus, transform.position, Quaternion.identity); //вызов эффекта подбора бонуса на месте игрока
             Destroy(collision.transform.parent.gameObject); //уничтожение бонуса
-        }else if (collision.CompareTag("Key")) //если соприкасается с ключем
+            playerFX.PlayOneShot(takeSound);
+        }
+        else if (collision.CompareTag("Key")) //если соприкасается с ключем
         {
             hasKey = true; //помещаем ключ в инвентарь
-            keyAnim.SetBool("hasKey", true); //переключение анимации UI для ключа
+            keyAnim.SetBool("hasKey", true); //переключение анимации UI для ключа        
             Instantiate(effectBonus, transform.position, Quaternion.identity); //вызов эффекта подбора бонуса на месте игрока
             Destroy(collision.transform.parent.gameObject); //уничтожение ключа
+            playerFX.PlayOneShot(takeSound);
         }
     }
 

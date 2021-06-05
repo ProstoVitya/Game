@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &155103750
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 155103751}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &155103751
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 155103750}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.353, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5842874916137030447}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1079938305
 GameObject:
   m_ObjectHideFlags: 0
@@ -45,6 +75,7 @@ GameObject:
   - component: {fileID: 7352639528005687135}
   - component: {fileID: 1353254387867472307}
   - component: {fileID: 8964305100712126585}
+  - component: {fileID: 278651889}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -66,6 +97,7 @@ Transform:
   - {fileID: 1062130101260464581}
   - {fileID: 2762702801614504092}
   - {fileID: 1079938306}
+  - {fileID: 155103751}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -114,16 +146,31 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   attackRange: 0.36
-  damage: 20
-  attackForce: 5
-  shuriken: {fileID: 0}
+  damage: 50
+  attackForce: 3
+  shuriken: {fileID: 2083729887387640091, guid: 372f467539519ca4796aae448b31ebfd,
+    type: 3}
   potionAnim: {fileID: 0}
   weaponAnim: {fileID: 0}
   hasKey: 0
   keyAnim: {fileID: 0}
   teleportationEffect: {fileID: 0}
-  effectBonus: {fileID: 0}
-  effectHealing: {fileID: 0}
+  effectBonus: {fileID: 6772171526110430172, guid: 0ea6178984b325945aadabf1a2642a32,
+    type: 3}
+  effectHealing: {fileID: 6229082918382017640, guid: c10c6928feeac0d4c9c3e7ce3ff76339,
+    type: 3}
+  gameUI: {fileID: 0}
+  attackSound: {fileID: 8300000, guid: 56eaeed495b4cde48b9d63f110f84abe, type: 3}
+  jumpSound: {fileID: 8300000, guid: 99b94e36f8de792418f8354c27d9f782, type: 3}
+  shurikenSound: {fileID: 8300000, guid: 06b4422d0e830f04f9ee097ae31632fc, type: 3}
+  potionSound: {fileID: 8300000, guid: 0066a63818a8b904f89dacf4be1a92ab, type: 3}
+  takeSound: {fileID: 8300000, guid: 27597136690e0de408321ba723b392ec, type: 3}
+  climbSound: {fileID: 8300000, guid: b0d9abc1c339639419ed8d40bf64e140, type: 3}
+  runSounds:
+  - {fileID: 8300000, guid: 86ef94fb83345994cb9ac2bfe88c21ab, type: 3}
+  - {fileID: 8300000, guid: 7948eb8f4aad665448b558addddae0cd, type: 3}
+  - {fileID: 8300000, guid: 568e73c95cff9664bb196afd356ee60d, type: 3}
+  - {fileID: 8300000, guid: 829a52dec2b78524aad3fc899506d0d1, type: 3}
 --- !u!114 &1510419268448425644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,6 +187,7 @@ MonoBehaviour:
   maxHP: 100
   bloodEffect: {fileID: 5218522361467105307, guid: b2def12aa5e7ce741a69533edf5bbbbc,
     type: 3}
+  hitSound: {fileID: 8300000, guid: eda216d4eca701047a1e061515977527, type: 3}
 --- !u!70 &7352639528005687135
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -225,6 +273,102 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!82 &278651889
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 561603468633754105}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 0.8
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2394863939761212209
 GameObject:
   m_ObjectHideFlags: 0

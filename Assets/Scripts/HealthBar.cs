@@ -8,6 +8,7 @@ public class HealthBar : MonoBehaviour
     int               currHP;      //текущее количество хп
     private int       fill;        //переменная заполнения bar
     public GameObject bloodEffect; //эффект крови
+    public AudioClip  hitSound;    //звук удара
 
     //метод запускается в начале работы скрипта
     //приравнивает все к максимальному хп
@@ -36,8 +37,10 @@ public class HealthBar : MonoBehaviour
 
     //метод получения урона
     //принимает количество хп которое нужно снять
+    //воспроизводит звук удара
     //создает эффект крови и уничтожает его через 1.5 секунды
     public void GetDamage(int damage) {
+        GetComponentInParent<AudioSource>().PlayOneShot(hitSound);
         currHP -= damage;
         Destroy(Instantiate(bloodEffect, transform.position, Quaternion.identity), 1.5f);
     }

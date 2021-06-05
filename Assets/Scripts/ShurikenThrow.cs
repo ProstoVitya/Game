@@ -1,21 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ShurikenThrow : MonoBehaviour
 {
-    public float speed;
-    public int damage;
+    const int ENEMY_LAYER = 9;
+    public float speed; //скорость
+    public int  damage; //урон
 
-    // Update is called once per frame
+    //Метод измененяет положение объекта
     void Update()
     {
         transform.Translate(Vector2.right * speed * Time.deltaTime);
     }
+
+    //метод соприкосновения с объектом
+    //при соприкосновении с врагом наносит урон и уничтожается
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.isTrigger) {
-            if(collision.gameObject.layer == 9)
+            if(collision.gameObject.layer == ENEMY_LAYER)
                 collision.GetComponent<EnemyPatrol>().GetDamage(damage);
             Destroy(gameObject);
         }       

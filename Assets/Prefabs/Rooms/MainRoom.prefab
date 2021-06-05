@@ -98,6 +98,8 @@ MonoBehaviour:
   keySpawnPosition: {fileID: 1432874346683478576}
   enemies: []
   spawned: 0
+  openDoor: {fileID: 8300000, guid: 4df93cdf1b744b44faf3d51a1ed65795, type: 3}
+  closeDoor: {fileID: 8300000, guid: 2922d34e3e9abd045b645f8245fa57e8, type: 3}
 --- !u!1 &1560588295899642056
 GameObject:
   m_ObjectHideFlags: 0

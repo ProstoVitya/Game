@@ -32,6 +32,7 @@ public class gameUI : MonoBehaviour
         if (GameObject.FindGameObjectWithTag("Player").GetComponent<HealthBar>().GetHP() <= 0) {
             DeathScreenUI.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
             Destroy(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>());
         }
 
@@ -42,6 +43,7 @@ public class gameUI : MonoBehaviour
     public void Resume()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
         gameIsPaused = false;
@@ -54,16 +56,7 @@ public class gameUI : MonoBehaviour
         Time.timeScale = 0f;
         gameIsPaused = true;
         Cursor.lockState = CursorLockMode.None;
-    }
-
-    //метод для кнопки вхыода в меню
-    //загружает сцену главного меню
-    //активирует курсор
-    public void LoadMenu()
-    {
-        gameIsPaused = false;
-        Cursor.lockState = CursorLockMode.None;
-        SceneManager.LoadScene("MainMenu");
+        Cursor.visible = true;
     }
 
     //кнопка выхода из игры, закрывает приложение
@@ -76,6 +69,7 @@ public class gameUI : MonoBehaviour
     public void Restart()
     {
         Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
         SceneManager.LoadScene(1);
     }
 }
