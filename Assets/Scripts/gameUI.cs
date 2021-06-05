@@ -7,6 +7,7 @@ public class gameUI : MonoBehaviour
     public bool        gameIsPaused     = false; //проверка остановки игры
     public GameObject  pauseMenuUI;              //меню паузы
     public GameObject  DeathScreenUI;            //экран смерти
+    public GameObject bossHP;
 
     //запускается в начале работы скрипта
     //ставит скорость игры в нормальное состояние

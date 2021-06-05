@@ -231,6 +231,7 @@ public class PlayerController : MonoBehaviour
                 //если портал открыт и нажата кнопка взаимодействия (Е)
             } else if (collision.GetComponent<Animator>().GetBool("isOpened")&&Input.GetKeyDown(KeyCode.E))
             {
+                collision.GetComponent<AudioSource>().Stop();
                 //активация эффекта телепортации
                 teleportationEffect.SetActive(true);
                 //запуск корутины
@@ -247,6 +248,7 @@ public class PlayerController : MonoBehaviour
         transform.position = new Vector2(-166.4f, -151.6f);
         yield return new WaitForSeconds(1f); //ожидание окончания анимации телепортации
         teleportationEffect.SetActive(false);
+        gameUI.bossHP.SetActive(true);
     }
 
     //метод вызывается вначале контакта объектов
