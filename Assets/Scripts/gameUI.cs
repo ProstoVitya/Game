@@ -1,16 +1,23 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
+//перечисление состояний меню паузы
+public enum menuState { pauseOpt, restMenu, toMenu, exitMenu, notAtPause }
+
 //скрипт включает в себя управление меню паузы и экраном смерти
 public class gameUI : MonoBehaviour
 {
-    public bool        gameIsPaused     = false; //проверка остановки игры
-    public GameObject  pauseMenuUI;              //меню паузы
-    public GameObject  DeathScreenUI;            //экран смерти
-    public GameObject  bossHP;                   //полоска хп для босса
-    public AudioSource source;                   //источник для звука смерти
-    public AudioClip   deathSound;               //звук смерти
-    public bool temp = false;
+    public GameObject           pauseMenuUI;                             //меню паузы
+    public GameObject           DeathScreenUI;                           //экран смерти
+    public GameObject           bossHP;                                  //полоска хп для босса
+    public AudioSource          source;                                  //источник для звука смерти
+    public AudioClip            deathSound;                              //звук смерти
+    public bool                 wasDestroyed     = false;                //провека на уничтожение игрока
+    public menuState            state            = menuState.notAtPause; //вкладка меню, на которой находится пользователь
+    [SerializeField] GameObject pauseOptions;
+    [SerializeField] GameObject restartMenu;
+    [SerializeField] GameObject exitToMenu;
+    [SerializeField] GameObject exitMenu;
 
     //запускается в начале работы скрипта
     //ставит скорость игры в нормальное состояние
@@ -20,22 +27,44 @@ public class gameUI : MonoBehaviour
     }
 
     //вызывается на каждый фрейм
-    //ставит игру на паузу/снимает с нее
-    //вызывает экран смерти
+    //при нажатии Esc проверяет состояние меню паузы
+    //ставит или снимает игру с паузы, возвращает меню на предыдущую страницу
     private void Update()
     {
-        //при нажатии Escape ставит/снимает с паузы
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            if (gameIsPaused)
-                Resume();
-            else
-                Pause();
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            switch (state)
+            {
+                case menuState.pauseOpt:
+                    state = menuState.notAtPause;
+                    Resume();
+                    break;
+                case menuState.restMenu:
+                    state = menuState.pauseOpt;
+                    pauseOptions.SetActive(true);
+                    restartMenu.SetActive(false);
+                    break;
+                case menuState.toMenu:
+                    state = menuState.pauseOpt;
+                    pauseOptions.SetActive(true);
+                    exitToMenu.SetActive(false);
+                    break;
+                case menuState.exitMenu:
+                    state = menuState.pauseOpt;
+                    pauseOptions.SetActive(true);
+                    exitMenu.SetActive(false);
+                    break;
+                case menuState.notAtPause:
+                    state = menuState.pauseOpt;
+                    Pause();
+                    break;
+            }
         }
 
         //если у объекта игрока 0хп вызывает экран смерти, отключает управление
         //останавливавет музыку игры, проигрывает звук смерти
-        if (GameObject.FindGameObjectWithTag("Player").GetComponent<HealthBar>().GetHP() <= 0 && !temp) {
-            temp = true;
+        if (GameObject.FindGameObjectWithTag("Player").GetComponent<HealthBar>().GetHP() <= 0 && !wasDestroyed) {
+            wasDestroyed = true;
             DeathScreenUI.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -55,7 +84,6 @@ public class gameUI : MonoBehaviour
         Cursor.visible = false;
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
-        gameIsPaused = false;
     }
 
     //метод ставит игру на паузу, останавливает игровое время, активирует меню паузы
@@ -63,7 +91,6 @@ public class gameUI : MonoBehaviour
     void Pause() {
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
-        gameIsPaused = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
@@ -80,5 +107,18 @@ public class gameUI : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         SceneManager.LoadScene(1);
+    }
+
+    //метод установки состояния меню
+    //вызывается при нажатии кнопок в меню
+    public void setState(string state) {
+        if (state == "restMenu")
+            this.state = menuState.restMenu;
+        else if (state == "toMenu")
+            this.state = menuState.toMenu;
+        else if (state == "exitMenu")
+            this.state = menuState.exitMenu;
+        else if (state == "pauseOpt")
+            this.state = menuState.pauseOpt;
     }
 }

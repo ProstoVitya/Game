@@ -84,35 +84,36 @@ public class PlayerController : MonoBehaviour
     //метод вызывается каждый фрейм
     void Update()
     {
-        if (gameUI.gameIsPaused) //если игра на паузе ничего не делает
-            return;
-        CheckGround(); //проверяет землю под ногами
-        //если нажата кнопка атаки, в данный момент не проходит анимация атаки и игрок на земле
-        if (Input.GetButtonDown("Fire1") && !isAttacking && isGrounded)
-            Attack(); //метод атаки
-        if (isGrounded && !isAttacking) //если игрок на земле и не атакует
+        if (gameUI.state == menuState.notAtPause)
         {
-            animator.SetInteger("State", 1); //переключение аниматора на анимацию покоя персонажа
-            if (Input.GetButton("Horizontal")) //если нажата кнопка бега (влево, вправо)
-                animator.SetInteger("State", 2); //переключение аниматора на анимацию бега
-            if (Input.GetButtonDown("Jump") && isGrounded) //если нажата кнопка прыжка и персонаж находитсяна земле
-                Jump(); //метод прыжка
+            CheckGround(); //проверяет землю под ногами
+                           //если нажата кнопка атаки, в данный момент не проходит анимация атаки и игрок на земле
+            if (Input.GetButtonDown("Fire1") && !isAttacking && isGrounded)
+                Attack(); //метод атаки
+            if (isGrounded && !isAttacking) //если игрок на земле и не атакует
+            {
+                animator.SetInteger("State", 1); //переключение аниматора на анимацию покоя персонажа
+                if (Input.GetButton("Horizontal")) //если нажата кнопка бега (влево, вправо)
+                    animator.SetInteger("State", 2); //переключение аниматора на анимацию бега
+                if (Input.GetButtonDown("Jump") && isGrounded) //если нажата кнопка прыжка и персонаж находитсяна земле
+                    Jump(); //метод прыжка
+            }
+            //если нажата кнопка лечения (у нас Q), еще есть зелья и хп < максимума
+            if (Input.GetKeyDown(KeyCode.Q) && potionsCount > 0 && healthbar.GetHP() < healthbar.maxHP)
+            {
+                potionAnim.SetInteger("Count", --potionsCount); //переключаем картинку на UI и уменьшаем количество зелий
+                Instantiate(effectHealing, transform.position, Quaternion.identity); //создаем эффект лечения
+                healthbar.GetHeal(12); //восстанавливаем 12 хп
+                playerFX.PlayOneShot(potionSound); //проигрываем звук
+            }
+            //если нажата кнопка броска сюрикена и их количество > 0
+            if (Input.GetButtonDown("Fire2") && weaponsCount > 0)
+            {
+                weaponAnim.SetInteger("weaponsCount", --weaponsCount); //переключаем картинку на UI и уменьшаем количество сюрикенов
+                Instantiate(shuriken, attackPos.position, transform.rotation); //создаем эффект броска
+                playerFX.PlayOneShot(shurikenSound); //проигрываем звук
+            }
         }
-        //если нажата кнопка лечения (у нас Q), еще есть зелья и хп < максимума
-        if (Input.GetKeyDown(KeyCode.Q) && potionsCount > 0 && healthbar.GetHP()< healthbar.maxHP) { 
-            potionAnim.SetInteger("Count", --potionsCount); //переключаем картинку на UI и уменьшаем количество зелий
-            Instantiate(effectHealing, transform.position, Quaternion.identity); //создаем эффект лечения
-            healthbar.GetHeal(12); //восстанавливаем 12 хп
-            playerFX.PlayOneShot(potionSound); //проигрываем звук
-        }
-        //если нажата кнопка броска сюрикена и их количество > 0
-        if (Input.GetButtonDown("Fire2") && weaponsCount > 0)
-        {
-            weaponAnim.SetInteger("weaponsCount", --weaponsCount); //переключаем картинку на UI и уменьшаем количество сюрикенов
-            Instantiate(shuriken, attackPos.position, transform.rotation); //создаем эффект броска
-            playerFX.PlayOneShot(shurikenSound); //проигрываем звук
-        }
-
     }
 
 
