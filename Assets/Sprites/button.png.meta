@@ -1,19 +1,13 @@
 fileFormatVersion: 2
-guid: 9ea44b437b483914e81c00d2af31f52f
+guid: 7357a754715041a43a4d9929651bf104
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -9170883327691654049
-    second: boss_weapon_0
+      213: 2530564911472380330
+    second: button_0
   - first:
-      213: 6308717913503243893
-    second: boss_weapon_1
-  - first:
-      213: 4609367965223617956
-    second: boss_weapon_2
-  - first:
-      213: -8206057188743147047
-    second: boss_weapon_3
+      213: 1763989116612304091
+    second: button_1
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -96,18 +90,6 @@ TextureImporter:
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
   - serializedVersion: 3
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 3
     buildTarget: Windows Store Apps
     maxTextureSize: 2048
     resizeAlgorithm: 0
@@ -123,55 +105,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: boss_weapon_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f5cf260f33a7ab080800000000000000
-      internalID: -9170883327691654049
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: boss_weapon_1
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 32
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 57e118e64811d8750800000000000000
-      internalID: 6308717913503243893
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: boss_weapon_2
+      name: button_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 32
+        width: 5
+        height: 5
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -179,20 +119,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4a5083e2eb3c7ff30800000000000000
-      internalID: 4609367965223617956
+      spriteID: aa90165216f5e1320800000000000000
+      internalID: 2530564911472380330
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: boss_weapon_3
+      name: button_1
       rect:
         serializedVersion: 2
-        x: 32
+        x: 5
         y: 0
-        width: 32
-        height: 32
+        width: 5
+        height: 5
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -200,8 +140,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9d19c62e67a3e1e80800000000000000
-      internalID: -8206057188743147047
+      spriteID: bdcd45b61c2fa7810800000000000000
+      internalID: 1763989116612304091
       vertices: []
       indices: 
       edges: []

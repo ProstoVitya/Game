@@ -12,8 +12,10 @@ public class PlayerController : MonoBehaviour
     private bool                   isGrounded    = false;   //проверка нахождения на земле
     private bool                   onRight       = true;    //проверка движения вправо
     private bool                   inCollWLadder = false;   //проверка соприкосновенря с лестницей
+    private float                  checkRange    =0.1f;     //радиус проверки на наличие земли
     public Transform               groundCheck;             //пустой объект проверяющий землю под ногами
     private Vector2                moveVector;              //вектор движения
+    public bool                    normalSize    =true;     //обычный размер персонажа(или уменьшенный)
 
     [Header("Attack Patameters")]
     public Transform               attackPos;               //центр области атаки
@@ -30,7 +32,7 @@ public class PlayerController : MonoBehaviour
     public Animator                potionAnim;              //анимация зелий лечения для UI
     private int                    weaponsCount  = 1;       //счетчик оружия
     public Animator                weaponAnim;              //анимация количества оружия для UI
-    public bool                    hasKey        = false;   //проверка наличия ключа
+    private bool                    hasKey        = false;   //проверка наличия ключа
     public Animator                keyAnim;                 //анимация наличия ключа для UI
 
     private Rigidbody2D            rb;                      //тело игрока
@@ -43,16 +45,17 @@ public class PlayerController : MonoBehaviour
     public GameObject              effectBonus;             //эффект бонуса
     public GameObject              effectHealing;           //эффект лечения
     public gameUI                  gameUI;                  //пользовательский интерфейс
+    public GameObject              cmcamera;                //камера, для изменения зума
 
     [Header("Sounds")]
-    private AudioSource playerFX;
-    public AudioClip attackSound;
-    public AudioClip jumpSound;
-    public AudioClip shurikenSound;
-    public AudioClip potionSound;
-    public AudioClip takeSound;
-    public AudioClip climbSound;
-    public AudioClip[] runSounds;
+    private AudioSource playerFX;                           //источник звука
+    public AudioClip attackSound;                           //звук удара
+    public AudioClip jumpSound;                             //звук прыжка
+    public AudioClip shurikenSound;                         //звук бросания сюрикена
+    public AudioClip potionSound;                           //звук выпивания зелья
+    public AudioClip takeSound;                             //звук поднятия бонуса
+    public AudioClip climbSound;                            //звук лазания по лестнице
+    public AudioClip[] runSounds;                           //звук бега
 
 
 
@@ -139,14 +142,14 @@ public class PlayerController : MonoBehaviour
     //находящиеся в круге с центром в groundCheck и радиуса 0.1f
     private void CheckGround()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, 0.1f,Ground);
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, checkRange, Ground);
         isGrounded = (colliders.Length > 0) && !inCollWLadder;
         if (!isGrounded && !inCollWLadder) //если нет земли под ногами и игрок не на лестнице
             animator.SetInteger("State", 3); //переключение на анимацию падения
     }
 
     //метод прыжка
-    //толкает лето ирока в направлении transform и силой jumpForce (ForceMode2D.Impulse - тип действующей силы)
+    //толкает тело игрока в направлении transform и силой jumpForce (ForceMode2D.Impulse - тип действующей силы)
     private void Jump()
     {
         playerFX.PlayOneShot(jumpSound);
@@ -159,7 +162,7 @@ public class PlayerController : MonoBehaviour
         isAttacking = true;
         animator.SetInteger("State", 5); //переключение на анимацию ататки
         playerFX.PlayOneShot(attackSound);
-        StartCoroutine(AttackTime()); //капуск корутины
+        StartCoroutine(AttackTime()); //запуск корутины
     }
 
     //метод вызывается в аниматоре на 0.10 анимации атаки
@@ -217,19 +220,21 @@ public class PlayerController : MonoBehaviour
             animator.SetInteger("State", 4); //переключение на анимацию подъема по лестнице
             moveVector.y = Input.GetAxisRaw("Vertical"); //изменение координаты в зависимости от нажатой кнопки
             //переключение между анимациями движения по лестнице и покоя
-            animator.SetFloat("moveY", Mathf.Abs(moveVector.y)); 
+            animator.SetFloat("moveY", Mathf.Abs(moveVector.y));
             rb.velocity = new Vector2(rb.velocity.x, moveVector.y * verticalSpeed); //изменение координаты
         }
         else if (collision.CompareTag("Portal")) //если игрок соприкасается с порталом
         {
-            if (hasKey && Input.GetKeyDown(KeyCode.E)) { //если имеет ключ и нажата кнопка взимодействия (Е)
+            if (hasKey && Input.GetKeyDown(KeyCode.E))
+            { //если имеет ключ и нажата кнопка взимодействия (Е)
                 hasKey = false;
                 keyAnim.SetBool("hasKey", false); //переключаем анимацию UI на отсутствие ключа
                 //переход в анимацию открытия портала
                 collision.GetComponent<Animator>().SetBool("isOpened", true);
                 collision.GetComponent<AudioSource>().Play();
                 //если портал открыт и нажата кнопка взаимодействия (Е)
-            } else if (collision.GetComponent<Animator>().GetBool("isOpened")&&Input.GetKeyDown(KeyCode.E))
+            }
+            else if (collision.GetComponent<Animator>().GetBool("isOpened") && Input.GetKeyDown(KeyCode.E))
             {
                 collision.GetComponent<AudioSource>().Stop();
                 //активация эффекта телепортации
@@ -238,8 +243,16 @@ public class PlayerController : MonoBehaviour
                 StartCoroutine(Teleportation());
             }
         }
+        else if (collision.CompareTag("Button")) {
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                //эффект нажатия на кнопку
+                collision.GetComponent<Animator>().Play("button_press");
+                changeSize();//изменение размера персонажа
+            }    
+                
+        }
     }
-
     //метод телепортации
     //через 0.5 секунд переносит игрока на указанные координаты (в комнату с боссом)
     private IEnumerator Teleportation()
@@ -285,5 +298,32 @@ public class PlayerController : MonoBehaviour
     {
         rb.gravityScale = gravityScale; //возврат гравитации в нормальное состояние
         inCollWLadder = false; //переменная соприкосновения с лестницей
+    }
+
+
+    private void changeSize() {
+
+        if (normalSize)
+        {
+            cmcamera.GetComponent<Animator>().SetBool("zoom", true);
+            transform.localScale = new Vector2(0.5f, 0.5f);
+            checkRange /= 2;
+            attackRange /= 2;
+            speed /= 2;
+            jumpForce = 8f;
+            gravityScale /=2;
+        }
+        else {
+            cmcamera.GetComponent<Animator>().SetBool("zoom", false) ;
+            transform.localScale = new Vector2(1f, 1f);
+            checkRange *= 2;
+            attackRange *= 2;
+            speed *= 2;
+            jumpForce = 15f;
+            gravityScale *= 2; 
+        }
+
+        normalSize = !normalSize;
+    
     }
 }

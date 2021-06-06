@@ -15,6 +15,7 @@ TagManager:
   - Weapon
   - HealthPotion
   - Portal
+  - Button
   layers:
   - Default
   - TransparentFX
