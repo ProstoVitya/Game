@@ -251,6 +251,7 @@ public class Boss : MonoBehaviour
     }
     private IEnumerator Shoot() {
         animator.SetInteger("State", 4);
+        yield return new WaitForSeconds(0.15f);
         recharged = false;
         for (int i = 0; i < 5; ++i) {
             bossFX.PlayOneShot(ShootSound);
