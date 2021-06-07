@@ -13,10 +13,10 @@ public class EnemyPatrol : MonoBehaviour
     private float currentSpeed;         //текущая скорость врага
     private bool moveRight = true;      //проверка движения вправо
     private bool isAttacking = false;   //проверка атакует ли враг
-    private bool patrol = false;        //проверка патрулирует ли враг
-    private bool angry = false;         //проверка спровоцирован ли враг
-    private bool goBack = false;        //проверка идет ли враг обратно патрулировать
-    private bool isGround;              //проверка есть ли земля перед врагом
+    public bool patrol = false;        //проверка патрулирует ли враг
+    public bool angry = false;         //проверка спровоцирован ли враг
+    public bool goBack = false;        //проверка идет ли враг обратно патрулировать
+    public bool isGround;              //проверка есть ли земля перед врагом
     private bool isWaiting = false;     //проверка ожидает ли враг
     public LayerMask Ground;            //слой по которому враг может ходить
 
@@ -115,9 +115,9 @@ public class EnemyPatrol : MonoBehaviour
     //функция патрулирования
     void Patrol()
     {   //разворачиваем врага, если перед ним пропасть и если он выходит за границу патрулирования
-        if (transform.position.x > patrolPoint.position.x + patrolDistance || (!isGround && moveRight))
+        if ((transform.position.x > patrolPoint.position.x + patrolDistance || !isGround) && moveRight)
             MoveLeft();
-        else if (transform.position.x < patrolPoint.position.x - patrolDistance ||(!isGround && !moveRight))
+        else if ((transform.position.x < patrolPoint.position.x - patrolDistance ||!isGround) && !moveRight)
             MoveRight();
         //если враг находится в состоянии ожидания, выходим из него
         if (isWaiting)

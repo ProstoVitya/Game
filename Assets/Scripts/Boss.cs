@@ -36,7 +36,12 @@ public class Boss : MonoBehaviour
     [Header("Fourth Wave")]
     public Transform point1;
     public Transform point2;
-    public GameObject bullet2;
+    public GameObject bullet1;
+    public float ReloadTime;
+    public float TakingDamageTime;
+    private bool goingLeft;
+    private bool recharged;
+    private bool canGo;
 
     [Header("Other")]
     public Transform[] gasPoints;
@@ -65,7 +70,7 @@ public class Boss : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<Animator>();//аниматор, включающий все анимации босса
-        stage = 1;
+        stage = 4;
     }
 
 
@@ -190,17 +195,61 @@ public class Boss : MonoBehaviour
     }
     void Stage4()
     {
-        if (!EnemyWave.activeSelf)
+        if (!FightWave.activeSelf)
         {
-            ParkourWave.SetActive(true);
-            transform.position = bosspoint3.position;
-            flipRight();
+            FightWave.SetActive(true);
+            transform.position = point1.position;
+            flipLeft();
+            shotPoint.rotation = Quaternion.Euler(0f, 0f, 90f);
             canTakeDamage = false;
             canDamage = false;
-            hpBeforeWave = GetComponent<HealthBar>().GetHP();
+            goingLeft = true;
+            recharged = true;
+            canGo = true;
         }
+        if (canGo) {
+            if (transform.position.x < player.position.x && !dirRight)
+                flipRight();
+            else if (transform.position.x > player.position.x && dirRight)
+                flipLeft();
+            if (goingLeft)
+            {
+                if (Vector2.Distance(transform.position, point2.position) > 0.1f)
+                    transform.position = Vector2.MoveTowards(transform.position, point2.position, speed * Time.deltaTime);
+                else
+                    goingLeft = false;
+            }
+            else
+            {
+                if (Vector2.Distance(transform.position, point1.position) > 0.1f)
+                    transform.position = Vector2.MoveTowards(transform.position, point1.position, speed * Time.deltaTime);
+                else
+                    goingLeft = true;
+            } 
+        }        
+        if (recharged)
+            StartCoroutine(Shoot());
     }
-    void Shot()
+    private IEnumerator Shoot() {
+        animator.SetInteger("State", 4);
+        recharged = false;
+        for (int i = 0; i < 5; ++i) {
+            Instantiate(bullet, shotPoint.position, shotPoint.rotation);
+            yield return new WaitForSeconds(ReloadTime);
+        }
+        canGo = false;
+        animator.SetInteger("State", 5);
+        yield return new WaitForSeconds(0.4f);
+        animator.SetInteger("State", 10);
+        canTakeDamage = true;
+        yield return new WaitForSeconds(TakingDamageTime);
+        canTakeDamage = false;
+        animator.SetInteger("State", 6);
+        yield return new WaitForSeconds(1.5f);
+        canGo = true;
+        recharged = true;
+    }
+    void ThrowingBullet()
     {
         difference = player.position - shotPoint.position;
         rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
@@ -225,7 +274,10 @@ public class Boss : MonoBehaviour
         player.position = PlayerPositionPoint.position;
         wave.SetActive(false);
         stage = StageToChange;
-        if (player.GetComponent<PlayerController>().normalSize)
+        if (stage == 4) {
+            if (!player.GetComponent<PlayerController>().normalSize)
+                player.GetComponent<PlayerController>().changeSize();
+        }else if (player.GetComponent<PlayerController>().normalSize)
             player.GetComponent<PlayerController>().changeSize();
         yield return new WaitForSeconds(1.5f); //ожидание окончания анимации телепортации
         blackoutEffect.SetActive(false);
@@ -236,10 +288,14 @@ public class Boss : MonoBehaviour
     public void GetDamage(int damage)
     {
         if (canTakeDamage) {
-            if (!canRush)
-                GetComponent<HealthBar>().GetDamage(damage);
-            else
-                GetComponent<HealthBar>().GetDamage(2 * damage);
+            if (stage == 4)
+                GetComponent<HealthBar>().GetDamage(damage / 2);
+            else {
+                if (!canRush)
+                    GetComponent<HealthBar>().GetDamage(damage);
+                else
+                    GetComponent<HealthBar>().GetDamage(2 * damage);
+            }            
         }
     }
 
