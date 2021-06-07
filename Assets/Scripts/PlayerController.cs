@@ -46,8 +46,8 @@ public class PlayerController : MonoBehaviour
     public GameObject              effectHealing;           //эффект лечения
     public gameUI                  gameUI;                  //пользовательский интерфейс
     public GameObject              cmcamera;                //камера, для изменения зума
-    public GameObject              endOfStory;              //
-    [HideInInspector] public bool  bossIsDead=false;        //
+    public GameObject              endOfStory;              //картинка с концом истории
+    [HideInInspector] public bool  bossIsDead=false;        //проверка мертв ли босс
     
 
     [Header("Sounds")]
@@ -253,12 +253,12 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (collision.GetComponent<Animator>().GetBool("isOpened") && Input.GetKeyDown(KeyCode.E))
                 {
-                    if (bossIsDead)
+                    if (bossIsDead)//если босс мертв
                     {
-                        canControl = false;
+                        canControl = false;//запрещаем управление
                         Cursor.lockState = CursorLockMode.None;
                         Cursor.visible = true;
-                        endOfStory.SetActive(true);
+                        endOfStory.SetActive(true);//включаем конец истории
                         Time.timeScale = 0f;
                     }
                     else {
@@ -287,9 +287,9 @@ public class PlayerController : MonoBehaviour
     private IEnumerator Teleportation()
     {
         canControl = false;//запрещаем управление
-        animator.SetInteger("State", 1);
+        animator.SetInteger("State", 1);//переключение аниматора на анимацию покоя персонажа
         yield return new WaitForSeconds(0.5f);
-        transform.position = new Vector3(-166.4f, -151.6f, -1f) ;
+        transform.position = new Vector3(-166.4f, -151.6f, -1f) ;//телепортируем игрока
         yield return new WaitForSeconds(1.5f); //ожидание окончания анимации телепортации
         teleportationEffect.SetActive(false);
         canControl = true;//разрешаем управление

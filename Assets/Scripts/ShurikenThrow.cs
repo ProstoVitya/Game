@@ -2,7 +2,7 @@
 
 public class ShurikenThrow : MonoBehaviour
 {
-    const int ENEMY_LAYER = 9;
+    const int ENEMY_LAYER = 9;//слой с врагами
     public float speed; //скорость
     public int  damage; //урон
 

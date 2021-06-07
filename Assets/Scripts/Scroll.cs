@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class Scroll : MonoBehaviour
 {
-    private float startPos1, startPos2, length, hight;
-    public GameObject camera;
-    public float paralaxEffect;
-
+    private float startPos1, startPos2, length, hight;//стартовые позиции области зрения камеры
+    public GameObject camera;                         //камера
+    public float paralaxEffect;                       //эффект паралакса
+    
+    //инициализируем переменные
     void Start()
     {
-        startPos1 = transform.position.x;
+        startPos1 = transform.position.x;           
         length = GetComponent<SpriteRenderer>().bounds.size.x;
         startPos2 = transform.position.y;
         hight = GetComponent<SpriteRenderer>().bounds.size.y;
     }
-
+    
     void Update()
     {
         float temp = camera.transform.position.x * (1 - paralaxEffect);
