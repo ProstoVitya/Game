@@ -15,14 +15,13 @@ public class Boss : MonoBehaviour
     public Transform[] points;
     public Transform shotPoint;
     public Transform bosspoint1;
-    public GameObject bullet;    
+    public GameObject bullet;
     public GameObject button;
     public float speed;
     private float rotZ;
     private int i;
-    private Vector2 difference;
-    private Transform player;            //координаты игрока    
-    private bool canRush=false;
+    private Vector2 difference;                 
+    private bool canRush = false;
 
     [Header("Second Wave")]
     public List<GameObject> enemies;     //список врагов, появившихся в комнате
@@ -35,11 +34,16 @@ public class Boss : MonoBehaviour
     public Transform bosspoint3;
 
     [Header("Fourth Wave")]
-    public Transform bosspoint4;
+    public Transform point1;
+    public Transform point2;
+    public GameObject bullet2;
 
     [Header("Other")]
+    public Transform[] gasPoints;
+    public GameObject GasEffect;
     public Transform PlayerPositionPoint;
     public GameObject blackoutEffect;   //эффект затемнения
+    private Transform player;           //координаты игрока   
     private bool canTakeDamage = false;
     private bool canDamage = false;
     private bool dirRight = false;
@@ -61,10 +65,10 @@ public class Boss : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<Animator>();//аниматор, включающий все анимации босса
-        stage = 2;
+        stage = 1;
     }
 
-    
+
     // Update is called once per frame
     void Update()
     {
@@ -79,7 +83,8 @@ public class Boss : MonoBehaviour
 
 
     }
-    void Stage1() {
+    void Stage1()
+    {
         if (!FirstWave.activeSelf)
         {
             FirstWave.SetActive(true);
@@ -117,6 +122,7 @@ public class Boss : MonoBehaviour
             {
                 animator.SetInteger("State", 3);
                 transform.position = Vector2.MoveTowards(transform.position, points[0].position, 7.5f * speed * Time.deltaTime);
+                canTakeDamage = true;
             }
 
         }
@@ -127,12 +133,12 @@ public class Boss : MonoBehaviour
             if (!blocking)
             {
                 blocking = true;
-                canTakeDamage = true;
-                StartCoroutine(CooldownBlockingDamage(2f,2, FirstWave));
+                StartCoroutine(ChangeStage(2f, 2, FirstWave));
             }
         }
     }
-    void Stage2() {
+    void Stage2()
+    {
         if (!EnemyWave.activeSelf)
         {
             EnemyWave.SetActive(true);
@@ -155,14 +161,16 @@ public class Boss : MonoBehaviour
         {
             animator.SetInteger("State", 10);
             canTakeDamage = true;
-            if (GetComponent<HealthBar>().GetHP()!=hpBeforeWave&&!blocking)
+            print(GetComponent<HealthBar>().GetHP());
+            if (GetComponent<HealthBar>().GetHP() != hpBeforeWave && !blocking)
             {
                 blocking = true;
-                StartCoroutine(CooldownBlockingDamage(1.5f,3, EnemyWave));
+                StartCoroutine(ChangeStage(1.5f, 3, EnemyWave));
             }
         }
     }
-    void Stage3() {
+    void Stage3()
+    {
         if (!EnemyWave.activeSelf)
         {
             ParkourWave.SetActive(true);
@@ -170,34 +178,38 @@ public class Boss : MonoBehaviour
             flipRight();
             canTakeDamage = false;
             canDamage = false;
-            hpBeforeWave = GetComponent<HealthBar>().GetHP();           
+            hpBeforeWave = GetComponent<HealthBar>().GetHP();
         }
         animator.SetInteger("State", 10);
         canTakeDamage = true;
         if (GetComponent<HealthBar>().GetHP() != hpBeforeWave && !blocking)
         {
             blocking = true;
-            StartCoroutine(CooldownBlockingDamage(1.5f, 4, EnemyWave));
+            StartCoroutine(ChangeStage(1.5f, 4, EnemyWave));
         }
     }
-    void Stage4() { 
+    void Stage4()
+    {
     }
-    void Shot() {
+    void Shot()
+    {
         difference = player.position - shotPoint.position;
         rotZ = Mathf.Atan2(difference.y, difference.x) * Mathf.Rad2Deg;
-        shotPoint.rotation = Quaternion.Euler(0f, 0f, rotZ-90);
-        Instantiate(bullet, shotPoint.position, shotPoint.rotation);       
+        shotPoint.rotation = Quaternion.Euler(0f, 0f, rotZ - 90);
+        Instantiate(bullet, shotPoint.position, shotPoint.rotation);
     }
     private IEnumerator WaitToRush()
     {
         yield return new WaitForSeconds(2.2f);
         canRush = true;
     }
-    private IEnumerator CooldownBlockingDamage(float blockTime,int StageToChange,GameObject wave)
+    private IEnumerator ChangeStage(float blockTime, int StageToChange, GameObject wave)
     {
+        foreach (Transform spawner in gasPoints)
+            Instantiate(GasEffect, spawner.position, spawner.rotation); //создаем эффект выпуска газа
         yield return new WaitForSeconds(blockTime);
         player.GetComponent<PlayerController>().canControl = false;
-        player.GetComponent<Animator>().SetInteger("State", 1);         
+        player.GetComponent<Animator>().SetInteger("State", 1);
         blackoutEffect.SetActive(true);
         yield return new WaitForSeconds(0.5f);
         animator.SetInteger("State", 0);
@@ -210,16 +222,21 @@ public class Boss : MonoBehaviour
         blackoutEffect.SetActive(false);
         blocking = false;
         canTakeDamage = false;
-        player.GetComponent<PlayerController>().canControl = true;        
+        player.GetComponent<PlayerController>().canControl = true;
     }
-    public void GetDamage(int damage) {
-        if(canTakeDamage)
-        GetComponent<HealthBar>().GetDamage(damage);    
+    public void GetDamage(int damage)
+    {
+        if (canTakeDamage) {
+            if (!canRush)
+                GetComponent<HealthBar>().GetDamage(damage);
+            else
+                GetComponent<HealthBar>().GetDamage(2 * damage);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.CompareTag("Player")&&canDamage)
+        if (collision.gameObject.CompareTag("Player") && canDamage)
             player.gameObject.GetComponent<HealthBar>().GetDamage(110);
     }
 }

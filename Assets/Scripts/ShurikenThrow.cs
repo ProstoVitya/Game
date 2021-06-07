@@ -16,7 +16,7 @@ public class ShurikenThrow : MonoBehaviour
     //при соприкосновении с врагом наносит урон и уничтожается
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!collision.isTrigger) {
+        if (!collision.isTrigger&& !collision.gameObject.CompareTag("Player")) {
             if(collision.gameObject.layer == ENEMY_LAYER)
                 collision.GetComponent<EnemyPatrol>().GetDamage(damage);
             Destroy(gameObject);

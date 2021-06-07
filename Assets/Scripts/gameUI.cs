@@ -63,7 +63,7 @@ public class gameUI : MonoBehaviour
 
         //если у объекта игрока 0хп вызывает экран смерти, отключает управление
         //останавливавет музыку игры, проигрывает звук смерти
-        if (GameObject.FindGameObjectWithTag("Player").GetComponent<HealthBar>().GetHP() <= 0 && !wasDestroyed) {
+        if (!wasDestroyed &&  GameObject.FindGameObjectWithTag("Player").GetComponent<HealthBar>().GetHP() <= 0 ) {
             wasDestroyed = true;
             DeathScreenUI.SetActive(true);
             Cursor.lockState = CursorLockMode.None;
@@ -71,7 +71,6 @@ public class gameUI : MonoBehaviour
             source.Stop();
             source.PlayOneShot(deathSound);
             Destroy(GameObject.FindGameObjectWithTag("Player"));
-            //Destroy(GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>());
         }
 
     }
