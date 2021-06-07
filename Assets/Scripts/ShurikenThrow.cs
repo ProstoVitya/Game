@@ -17,8 +17,13 @@ public class ShurikenThrow : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.isTrigger&& !collision.gameObject.CompareTag("Player")) {
-            if(collision.gameObject.layer == ENEMY_LAYER)
-                collision.GetComponent<EnemyPatrol>().GetDamage(damage);
+            if (collision.gameObject.layer == ENEMY_LAYER)
+            {
+                if (collision.TryGetComponent(out EnemyPatrol enemy))
+                    enemy.GetComponent<EnemyPatrol>().GetDamage(damage);
+                else if (collision.TryGetComponent(out Boss boss))
+                    boss.GetComponent<Boss>().GetDamage(damage);
+            }
             Destroy(gameObject);
         }       
     }

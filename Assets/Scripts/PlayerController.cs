@@ -17,15 +17,14 @@ public class PlayerController : MonoBehaviour
     private Vector2                moveVector;              //вектор движения
     public bool                    normalSize    =true;     //обычный размер персонажа(или уменьшенный)
     public bool                    canControl    =true;     //проверка можно ли управлять персонажем
+    public LayerMask               Ground;                  //слой земли
 
     [Header("Attack Patameters")]
     public Transform               attackPos;               //центр области атаки
-    public LayerMask               Enemies;                 //слой врагов
-    public LayerMask               Ground;                  //слой земли
+    public LayerMask               Enemies;                 //слой врагов   
     private bool                   isAttacking   = false;   //проверка атаки
     public float                   attackRange;             //радиус атаки
     public int                     damage;                  //урон
-    public float                   attackForce;             //сила отбрасывания при атаке
     public GameObject              shuriken;                //сюрикен
 
     [Header("Inventory")]
@@ -33,7 +32,7 @@ public class PlayerController : MonoBehaviour
     public Animator                potionAnim;              //анимация зелий лечения для UI
     private int                    weaponsCount  = 1;       //счетчик оружия
     public Animator                weaponAnim;              //анимация количества оружия для UI
-    private bool                    hasKey        = false;   //проверка наличия ключа
+    private bool                   hasKey        = false;   //проверка наличия ключа
     public Animator                keyAnim;                 //анимация наличия ключа для UI
 
     private Rigidbody2D            rb;                      //тело игрока
@@ -344,7 +343,6 @@ public class PlayerController : MonoBehaviour
             attackRange /= 2;
             speed /= 2;
             jumpForce = 8f;
-            checkRange /= 2;
             gravityScale /=2;
         }
         else
@@ -355,7 +353,6 @@ public class PlayerController : MonoBehaviour
             attackRange *= 2;
             speed *= 2;
             jumpForce = 15f;
-            checkRange *= 2;
             gravityScale *= 2; 
         }
 

@@ -22,6 +22,7 @@ public class Boss : MonoBehaviour
     private int i;
     private Vector2 difference;                 
     private bool canRush = false;
+    private bool x2 = false;
 
     [Header("Second Wave")]
     public List<GameObject> enemies;     //список врагов, появившихся в комнате
@@ -114,6 +115,7 @@ public class Boss : MonoBehaviour
             canRush = false;
             canTakeDamage = false;
             canDamage = true;
+            x2 = false;
             i = 1;
         }
         if (i != points.Length)
@@ -138,6 +140,7 @@ public class Boss : MonoBehaviour
             {
                 animator.SetInteger("State", 2);
                 canTakeDamage = true;
+                x2 = true;
                 StartCoroutine(WaitToRush());
             }
             else
@@ -150,6 +153,7 @@ public class Boss : MonoBehaviour
         if (Vector2.Distance(transform.position, points[0].position) < 0.1f)
         {
             animator.SetInteger("State", 10);
+            x2 = false;
             canDamage = false;
             if (!blocking)
             {
@@ -310,7 +314,7 @@ public class Boss : MonoBehaviour
                 GetComponent<HealthBar>().GetDamage(damage / 2);
             else if (stage == 1)
             {
-                if (!canRush)
+                if (x2)
                     GetComponent<HealthBar>().GetDamage(2 * damage);
                 else
                     GetComponent<HealthBar>().GetDamage(damage);
