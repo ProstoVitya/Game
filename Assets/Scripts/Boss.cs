@@ -8,7 +8,7 @@ public class Boss : MonoBehaviour
     public GameObject FirstWave;
     public GameObject EnemyWave;
     public GameObject ParkourWave;
-    public GameObject ThrowingWave;
+    public GameObject FightWave;
     private int stage;
 
     [Header("First Wave")]
@@ -190,6 +190,15 @@ public class Boss : MonoBehaviour
     }
     void Stage4()
     {
+        if (!EnemyWave.activeSelf)
+        {
+            ParkourWave.SetActive(true);
+            transform.position = bosspoint3.position;
+            flipRight();
+            canTakeDamage = false;
+            canDamage = false;
+            hpBeforeWave = GetComponent<HealthBar>().GetHP();
+        }
     }
     void Shot()
     {

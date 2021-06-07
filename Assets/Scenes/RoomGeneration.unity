@@ -1094,6 +1094,7 @@ Transform:
   m_Children:
   - {fileID: 1442316249}
   - {fileID: 1118662096}
+  - {fileID: 1224683136}
   m_Father: {fileID: 1844273871}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6468,7 +6469,7 @@ MonoBehaviour:
   FirstWave: {fileID: 490495373}
   EnemyWave: {fileID: 164072873}
   ParkourWave: {fileID: 1705139215}
-  ThrowingWave: {fileID: 1290930904}
+  FightWave: {fileID: 163404186}
   points:
   - {fileID: 601618411}
   - {fileID: 483349976}
@@ -6492,8 +6493,8 @@ MonoBehaviour:
     type: 3}
   bosspoint2: {fileID: 1856539228}
   bosspoint3: {fileID: 1765170879}
-  point1: {fileID: 0}
-  point2: {fileID: 0}
+  point1: {fileID: 1442316249}
+  point2: {fileID: 1118662096}
   bullet2: {fileID: 0}
   gasPoints:
   - {fileID: 1558847180}
@@ -10374,7 +10375,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1118662096}
   m_Layer: 0
-  m_Name: movePoint
+  m_Name: movePoint0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11954,6 +11955,81 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1212470830}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &1224683135
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 163404187}
+    m_Modifications:
+    - target: {fileID: 2472758039912321626, guid: 08cc79d05dff93c4e99888cf72b10e60,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2472758039912321626, guid: 08cc79d05dff93c4e99888cf72b10e60,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -12.813
+      objectReference: {fileID: 0}
+    - target: {fileID: 2472758039912321626, guid: 08cc79d05dff93c4e99888cf72b10e60,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.9568816
+      objectReference: {fileID: 0}
+    - target: {fileID: 2472758039912321626, guid: 08cc79d05dff93c4e99888cf72b10e60,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2472758039912321626, guid: 08cc79d05dff93c4e99888cf72b10e60,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2472758039912321626, guid: 08cc79d05dff93c4e99888cf72b10e60,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2472758039912321626, guid: 08cc79d05dff93c4e99888cf72b10e60,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2472758039912321626, guid: 08cc79d05dff93c4e99888cf72b10e60,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2472758039912321626, guid: 08cc79d05dff93c4e99888cf72b10e60,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2472758039912321626, guid: 08cc79d05dff93c4e99888cf72b10e60,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2472758039912321626, guid: 08cc79d05dff93c4e99888cf72b10e60,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6786453665649074236, guid: 08cc79d05dff93c4e99888cf72b10e60,
+        type: 3}
+      propertyPath: m_Name
+      value: button
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 08cc79d05dff93c4e99888cf72b10e60, type: 3}
+--- !u!4 &1224683136 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2472758039912321626, guid: 08cc79d05dff93c4e99888cf72b10e60,
+    type: 3}
+  m_PrefabInstance: {fileID: 1224683135}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1242443996
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13485,7 +13561,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1442316249}
   m_Layer: 0
-  m_Name: movePoint
+  m_Name: movePoint1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
