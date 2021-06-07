@@ -102,14 +102,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   patrolPoint: {fileID: 6219058670563472690}
   groundCheck: {fileID: 3186604695509676329}
-  Ground:
-    serializedVersion: 2
-    m_Bits: 1024
   speed: 1.65
   patrolDistance: 5
   stopDistance: 3
-  cooldownAttack: 0.5
-  isGround: 0
+  checkRange: 0.1
+  Ground:
+    serializedVersion: 2
+    m_Bits: 1024
+  AvgDamage: 8
 --- !u!50 &3362928703255456332
 Rigidbody2D:
   serializedVersion: 4

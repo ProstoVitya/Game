@@ -16,16 +16,16 @@ public class AddRoom : MonoBehaviour
     public GameObject[]         bonusTypes;       //типы бонусов, которые могут появиться в комнате
     public Transform            keySpawnPosition; //место в котором может появиться ключ
 
-    public List<GameObject>     enemies;          //список враго, появившихся в комнате
+    public List<GameObject>     enemies;          //список врагов, появившихся в комнате
 
     private RoomVariants        variants;         //варианты комнат
     public bool                 spawned;          //проверка, заходил ли в комнату игрок
 
     [Header("Bonuses")]
-    private AudioSource roomFX;
-    public AudioClip openDoor;
-    public AudioClip closeDoor;
-
+    private AudioSource roomFX;                   //источник звука
+    public AudioClip openDoor;                    //звук открытия дверей
+    public AudioClip closeDoor;                   //звук закрытия дверей
+        
     //метод вызывается перед Start()
     //объявление переменной вариантов комнат
     private void Awake()
@@ -88,7 +88,7 @@ public class AddRoom : MonoBehaviour
                 }
             }
             if (roomFX != null)
-                roomFX.PlayOneShot(closeDoor);
+                roomFX.PlayOneShot(closeDoor); //воспроизводит звук закрытия один раз
             StartCoroutine(CheckEnemies()); //3
         }
     }
@@ -119,6 +119,6 @@ public class AddRoom : MonoBehaviour
             }
         }
         if(roomFX != null)
-            roomFX.PlayOneShot(openDoor);
+            roomFX.PlayOneShot(openDoor);//воспроизводит звук открытия один раз
     }
 }

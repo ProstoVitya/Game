@@ -19,7 +19,6 @@ public class Door : MonoBehaviour
     //переключает аниматор в состояние открытой двери
     public void Open() {
         gameObject.GetComponent<BoxCollider2D>().isTrigger = true;
-        //doorFX.PlayOneShot(openSound);
         animator.SetInteger("State", 0);
     }
 

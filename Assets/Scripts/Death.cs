@@ -9,7 +9,7 @@ public class Death : MonoBehaviour
     public GameObject[] bonusTypes; //бонусы которые могут выпасть при убийстве
     public GameObject   effectDrop; //эффект выпадения бонуса
     public AudioClip    hit; //звук удара
-    public bool         destroyed = false;
+    public bool         destroyed = false;//переменнная, чтоб при попытке удаления объекта мы не удаляли его несколько раз
 
     //запускается в начале работы скрипта
     //объявляет переменную room
@@ -43,7 +43,7 @@ public class Death : MonoBehaviour
         }
     }
 
-    //вспомогательный метод для уничтожения родительского объекта
+    //вспомогательный метод для уничтожения объекта
     private void Destroy() {
         Destroy(gameObject);
     }
