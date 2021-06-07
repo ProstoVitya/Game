@@ -3,25 +3,35 @@ using UnityEngine;
 
 public class EnemyPatrol : MonoBehaviour
 {
-    private SpriteRenderer sprite;      //спрайт врага
-    private Animator animator;          //аниматор содержащий анимации атаки и ходьбы
-    private Transform player;           //координаты игрока
+    [Header("Move Patameters")]
     public Transform patrolPoint;       //точка к которой привязан объект
     public Transform groundCheck;       //точка для проверки есть ли обрыв перед врагом
-    public LayerMask Ground;            //слой по которому враг может ходить
-
     public float speed;                 //скорость врага
     public float patrolDistance;        //дистанция патрулирования врага  
     public float stopDistance;          //дистанция обнаружения игрока
-    public float cooldownAttack=0.6f;   //время перезарядки атаки
+    public float checkRange;     //радиус проверки на наличие земли
     private float currentSpeed;         //текущая скорость врага
     private bool moveRight = true;      //проверка движения вправо
     private bool isAttacking = false;   //проверка атакует ли враг
     private bool patrol = false;        //проверка патрулирует ли враг
     private bool angry = false;         //проверка спровоцирован ли враг
     private bool goBack = false;        //проверка идет ли враг обратно патрулировать
-    private bool isGround;               //проверка есть ли земля перед врагом
+    private bool isGround;              //проверка есть ли земля перед врагом
     private bool isWaiting = false;     //проверка ожидает ли враг
+    public LayerMask Ground;            //слой по которому враг может ходить
+
+    [Header("Attack Patameters")]    
+    public int AvgDamage;//средний урон от атаки
+    private float cooldownAttack;   //время перезарядки атаки
+
+    private SpriteRenderer sprite;      //спрайт врага
+    private Animator animator;          //аниматор содержащий анимации атаки и ходьбы
+    private Transform player;           //координаты игрока
+    
+
+    
+    
+    
 
 
 
@@ -43,7 +53,7 @@ public class EnemyPatrol : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(groundCheck.position, 0.1f);
+        Gizmos.DrawWireSphere(groundCheck.position, checkRange);
     }
 
     //метод вызывается в начале работы скрипта
@@ -68,7 +78,7 @@ public class EnemyPatrol : MonoBehaviour
         //проверка есть ли обрыв перед врагом
         //создается массив, в который попадают все элементы на слое Ground,
         //находящиеся в круге с центром в groundCheck и радиуса 0.1f
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, 0.1f, Ground);                                                                                         
+        Collider2D[] colliders = Physics2D.OverlapCircleAll(groundCheck.position, checkRange, Ground);                                                                                         
         isGround = colliders.Length > 0;//земля есть, если кол-во элементов в массиве больше нуля
         if (cooldownAttack > 0)//если атака не перезарядилась, уменьшаем время 
             cooldownAttack -= Time.deltaTime;
@@ -168,7 +178,7 @@ public class EnemyPatrol : MonoBehaviour
     //функция получения урона, при этом враг замедляется на 0.5 секунд с помощью корутины
     public void GetDamage(int damage)
     {
-        currentSpeed = 0.40f;
+        currentSpeed /= 4;
         GetComponent<HealthBar>().GetDamage(damage);
         StartCoroutine(StopTime());//запуск корутины
     }
@@ -201,10 +211,10 @@ public class EnemyPatrol : MonoBehaviour
                 MoveRight();
         }
     }
-    //функция нанесения рандомного значения урона(6-11) игроку при ударе, вызывающаяся на 0.1 сек анимации
+    //функция нанесения рандомного значения урона(средний урон +/- 3) игроку при ударе, вызывающаяся на 0.1 сек анимации
     private void onAttack()
     {
-        player.gameObject.GetComponent<HealthBar>().GetDamage(Random.Range(6,11));
+        player.gameObject.GetComponent<HealthBar>().GetDamage(Random.Range(AvgDamage-3, AvgDamage + 3));
     }
     //корутина атаки, выключаем анимацию атаки, задаем кулдаун после удара
     private IEnumerator AttackTime()
