@@ -47,6 +47,9 @@ public class PlayerController : MonoBehaviour
     public GameObject              effectHealing;           //эффект лечения
     public gameUI                  gameUI;                  //пользовательский интерфейс
     public GameObject              cmcamera;                //камера, для изменения зума
+    public GameObject              endOfStory;              //
+    [HideInInspector] public bool  bossIsDead=false;        //
+    
 
     [Header("Sounds")]
     private AudioSource playerFX;                           //источник звука
@@ -251,11 +254,22 @@ public class PlayerController : MonoBehaviour
                 }
                 else if (collision.GetComponent<Animator>().GetBool("isOpened") && Input.GetKeyDown(KeyCode.E))
                 {
-                    collision.GetComponent<AudioSource>().Stop();
-                    //активация эффекта телепортации
-                    teleportationEffect.SetActive(true);
-                    //запуск корутины
-                    StartCoroutine(Teleportation());
+                    if (bossIsDead)
+                    {
+                        canControl = false;
+                        Cursor.lockState = CursorLockMode.None;
+                        Cursor.visible = true;
+                        endOfStory.SetActive(true);
+                        Time.timeScale = 0f;
+                    }
+                    else {
+                        collision.GetComponent<AudioSource>().Stop();
+                        //активация эффекта телепортации
+                        teleportationEffect.SetActive(true);
+                        //запуск корутины
+                        StartCoroutine(Teleportation());
+                    }
+                    
                 }
             }
             else if (collision.CompareTag("Button"))//если игрок соприкасается с кнопкой и нажата кнопка взаимодействия E
@@ -274,8 +288,9 @@ public class PlayerController : MonoBehaviour
     private IEnumerator Teleportation()
     {
         canControl = false;//запрещаем управление
+        animator.SetInteger("State", 1);
         yield return new WaitForSeconds(0.5f);
-        transform.position = new Vector2(-166.4f, -151.6f);
+        transform.position = new Vector3(-166.4f, -151.6f, -1f) ;
         yield return new WaitForSeconds(1.5f); //ожидание окончания анимации телепортации
         teleportationEffect.SetActive(false);
         canControl = true;//разрешаем управление

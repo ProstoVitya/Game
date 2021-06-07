@@ -14,11 +14,16 @@ public class BossRoom : MonoBehaviour
     //при входе игрока в комнату
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player")&&boss!=null)
         {
             door.GetComponent<Door>().Close();
             bossHP.SetActive(true);
             boss.SetActive(true);
         }
+        
+    }
+    void Update() {
+        if (boss == null)
+            door.GetComponent<Door>().Open();
     }
 }
