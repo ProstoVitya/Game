@@ -12,7 +12,7 @@ public class gameUI : MonoBehaviour
     public GameObject           bossHP;                                  //полоска хп для босса
     public AudioSource          source;                                  //источник для звука смерти
     public AudioClip            deathSound;                              //звук смерти
-    public bool                 wasDestroyed     = false;                //провека на уничтожение игрока
+    private bool                wasDestroyed     = false;                //провека на уничтожение игрока
     public menuState            state            = menuState.notAtPause; //вкладка меню, на которой находится пользователь
     [SerializeField] GameObject pauseOptions;
     [SerializeField] GameObject restartMenu;
@@ -80,10 +80,10 @@ public class gameUI : MonoBehaviour
     //убирает курсор
     public void Resume()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     //метод ставит игру на паузу, останавливает игровое время, активирует меню паузы
@@ -120,5 +120,7 @@ public class gameUI : MonoBehaviour
             this.state = menuState.exitMenu;
         else if (state == "pauseOpt")
             this.state = menuState.pauseOpt;
+        else if (state == "notAtPause")
+            this.state = menuState.notAtPause;
     }
 }

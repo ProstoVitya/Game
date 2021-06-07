@@ -9,6 +9,7 @@ public class HealthBar : MonoBehaviour
     private int       fill;        //переменная заполнения bar
     public GameObject bloodEffect; //эффект крови
     public AudioClip  hitSound;    //звук удара
+    public bool       isBoss;
 
     //метод запускается в начале работы скрипта
     //приравнивает все к максимальному хп
@@ -22,7 +23,10 @@ public class HealthBar : MonoBehaviour
     void Update()
     {
         if (fill != currHP) { //если заполнение != текущему хп
-            bar.fillAmount = currHP * 0.01f; //перезаполнение полоски bar
+            if(!isBoss)
+                bar.fillAmount = currHP * 0.01f; //перезаполнение полоски bar
+            else
+                bar.fillAmount = currHP * 0.001f; //перезаполнение полоски bar
             fill = currHP;
         }
     }
