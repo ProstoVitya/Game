@@ -70,7 +70,7 @@ public class Boss : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
         animator = GetComponent<Animator>();//аниматор, включающий все анимации босса
-        stage = 4;
+        stage = 1;
     }
 
 

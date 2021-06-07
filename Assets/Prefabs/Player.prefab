@@ -91,7 +91,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 561603468633754105}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1062130101260464581}
@@ -138,6 +138,8 @@ MonoBehaviour:
   verticalSpeed: 5
   jumpForce: 15
   groundCheck: {fileID: 2762702801614504092}
+  normalSize: 1
+  canControl: 1
   attackPos: {fileID: 1079938306}
   Enemies:
     serializedVersion: 2
@@ -152,7 +154,6 @@ MonoBehaviour:
     type: 3}
   potionAnim: {fileID: 0}
   weaponAnim: {fileID: 0}
-  hasKey: 0
   keyAnim: {fileID: 0}
   teleportationEffect: {fileID: 0}
   effectBonus: {fileID: 6772171526110430172, guid: 0ea6178984b325945aadabf1a2642a32,
@@ -160,6 +161,7 @@ MonoBehaviour:
   effectHealing: {fileID: 6229082918382017640, guid: c10c6928feeac0d4c9c3e7ce3ff76339,
     type: 3}
   gameUI: {fileID: 0}
+  cmcamera: {fileID: 0}
   attackSound: {fileID: 8300000, guid: 56eaeed495b4cde48b9d63f110f84abe, type: 3}
   jumpSound: {fileID: 8300000, guid: 99b94e36f8de792418f8354c27d9f782, type: 3}
   shurikenSound: {fileID: 8300000, guid: 06b4422d0e830f04f9ee097ae31632fc, type: 3}
@@ -188,6 +190,7 @@ MonoBehaviour:
   bloodEffect: {fileID: 5218522361467105307, guid: b2def12aa5e7ce741a69533edf5bbbbc,
     type: 3}
   hitSound: {fileID: 8300000, guid: eda216d4eca701047a1e061515977527, type: 3}
+  isBoss: 0
 --- !u!70 &7352639528005687135
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
