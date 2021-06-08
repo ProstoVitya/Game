@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     public bool                    normalSize    =true;     //обычный размер персонажа(или уменьшенный)
     public bool                    canControl    =true;     //проверка можно ли управлять персонажем
     public LayerMask               Ground;                  //слой земли
-    private bool inCollWButton = false;
+    private bool                   inCollWButton = false;   //проверка соприкасаемся ли с кнопкой
     [Header("Attack Patameters")]
     public Transform               attackPos;               //центр области атаки
     public LayerMask               Enemies;                 //слой врагов   
@@ -123,12 +123,8 @@ public class PlayerController : MonoBehaviour
                     Instantiate(shuriken, attackPos.position, transform.rotation); //создаем эффект броска
                     playerFX.PlayOneShot(shurikenSound); //проигрываем звук
                 }
-                if (inCollWButton && Input.GetKeyDown(KeyCode.E))
-                {
-                    //эффект нажатия на кнопку
-
+                if (inCollWButton && Input.GetKeyDown(KeyCode.E))//проверяем если соприкасаемся с кнопкой и нажата клавиша E меняем размер игрока
                     changeSize();//изменение размера персонажа
-                }
             }
            
         }
@@ -278,15 +274,6 @@ public class PlayerController : MonoBehaviour
                     
                 }
             }
-            else if (collision.CompareTag("Button"))//если игрок соприкасается с кнопкой и нажата кнопка взаимодействия E
-            {
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    //эффект нажатия на кнопку
-                    collision.GetComponent<Animator>().Play("button_press");
-                    changeSize();//изменение размера персонажа
-                }
-            }
         }
     }
     //метод телепортации
@@ -306,7 +293,7 @@ public class PlayerController : MonoBehaviour
     //отвечает за сбор бонусов
     private void OnTriggerEnter2D(Collider2D collision) {
         //если игрок соприкасается с зельем лечения и имеет их меньше трех
-        if (collision.CompareTag("Button"))
+        if (collision.CompareTag("Button"))//если игрок соприкасается с кнопкой
             inCollWButton = true;
         else if (collision.CompareTag("HealthPotion") && potionsCount < 3)
         {
@@ -336,10 +323,10 @@ public class PlayerController : MonoBehaviour
     //метод вызывается при выходе из контакта с объектом
     private void OnTriggerExit2D(Collider2D collision)
     {
-       if (collision.CompareTag("Button"))
+       if (collision.CompareTag("Button"))//если вышли из соприкосновения с кнопкой
             inCollWButton = false;
-        rb.gravityScale = gravityScale; //возврат гравитации в нормальное состояние
-        inCollWLadder = false; //переменная соприкосновения с лестницей
+       rb.gravityScale = gravityScale; //возврат гравитации в нормальное состояние
+       inCollWLadder = false; //переменная соприкосновения с лестницей
     }
 
     //функция изменения размера персонажа

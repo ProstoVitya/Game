@@ -244,7 +244,7 @@ public class Boss : MonoBehaviour
             goingLeft = true;//задаем боссу перемещение влево
             recharged = false;//задаем боссу состояние перезаряжен
             canGo = true;//задаем боссу состояние разрешающее ему идти
-            canDamage = true;
+            canDamage = true;//разрешает наносить урон
             StartCoroutine(waitpls());//запускаем корутину чтоб успеть игроку отойти
         }
         if (canGo) {//если босс может идти 
@@ -290,7 +290,7 @@ public class Boss : MonoBehaviour
             yield return new WaitForSeconds(ReloadTime);//ждем время перезарядки
         }
         canGo = false;//останавливаем врага
-        canDamage = false;
+        canDamage = false;//запрещаем наносить урон
         animator.SetInteger("State", 5);//включаем анимацию перехода к уязвимости босса
         yield return new WaitForSeconds(0.4f);//ждем 0.4 секунды
         animator.SetInteger("State", 10);//включаем анимацию уязвимости босса
@@ -299,7 +299,7 @@ public class Boss : MonoBehaviour
         canTakeDamage = false;//запрещаем получать урон
         animator.SetInteger("State", 6);//включаем анимацию включения неуязвимости босса
         yield return new WaitForSeconds(1.5f);//ждем 1.5 секунды, чтобы дать игроку уйти
-        canDamage = true;
+        canDamage = true;//разрешаем наносить урон
         canGo = true;//разрешаем двигаться
         recharged = true;//босс перезаряжен
     }
