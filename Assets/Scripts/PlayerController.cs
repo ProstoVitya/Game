@@ -18,7 +18,7 @@ public class PlayerController : MonoBehaviour
     public bool                    normalSize    =true;     //обычный размер персонажа(или уменьшенный)
     public bool                    canControl    =true;     //проверка можно ли управлять персонажем
     public LayerMask               Ground;                  //слой земли
-
+    private bool inCollWButton = false;
     [Header("Attack Patameters")]
     public Transform               attackPos;               //центр области атаки
     public LayerMask               Enemies;                 //слой врагов   
@@ -123,7 +123,14 @@ public class PlayerController : MonoBehaviour
                     Instantiate(shuriken, attackPos.position, transform.rotation); //создаем эффект броска
                     playerFX.PlayOneShot(shurikenSound); //проигрываем звук
                 }
+                if (inCollWButton && Input.GetKeyDown(KeyCode.E))
+                {
+                    //эффект нажатия на кнопку
+
+                    changeSize();//изменение размера персонажа
+                }
             }
+           
         }
     }
 
@@ -299,7 +306,9 @@ public class PlayerController : MonoBehaviour
     //отвечает за сбор бонусов
     private void OnTriggerEnter2D(Collider2D collision) {
         //если игрок соприкасается с зельем лечения и имеет их меньше трех
-        if (collision.CompareTag("HealthPotion") && potionsCount < 3)
+        if (collision.CompareTag("Button"))
+            inCollWButton = true;
+        else if (collision.CompareTag("HealthPotion") && potionsCount < 3)
         {
             potionAnim.SetInteger("Count", ++potionsCount); //переключение анимации UI и увеличение счетчика зелий
             Instantiate(effectBonus, transform.position, Quaternion.identity); //вызов эффекта подбора бонуса на месте игрока
@@ -327,6 +336,8 @@ public class PlayerController : MonoBehaviour
     //метод вызывается при выходе из контакта с объектом
     private void OnTriggerExit2D(Collider2D collision)
     {
+       if (collision.CompareTag("Button"))
+            inCollWButton = false;
         rb.gravityScale = gravityScale; //возврат гравитации в нормальное состояние
         inCollWLadder = false; //переменная соприкосновения с лестницей
     }

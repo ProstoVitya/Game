@@ -242,8 +242,10 @@ public class Boss : MonoBehaviour
             canTakeDamage = false;//запрещаем боссу получать урон
             canDamage = false;//запрещаем боссу наносить урон
             goingLeft = true;//задаем боссу перемещение влево
-            recharged = true;//задаем боссу состояние перезаряжен
+            recharged = false;//задаем боссу состояние перезаряжен
             canGo = true;//задаем боссу состояние разрешающее ему идти
+            canDamage = true;
+            StartCoroutine(waitpls());//запускаем корутину чтоб успеть игроку отойти
         }
         if (canGo) {//если босс может идти 
             //поворачиваем босса лицом к игроку
@@ -270,11 +272,17 @@ public class Boss : MonoBehaviour
         if (recharged)//если босс перезаряжен то запускаем корутину стрельбы
             StartCoroutine(Shoot());
     }
-    //корутина стрельбы
-    private IEnumerator Shoot() {
+    //корутина ожидания 1,5сек, затем разрешаем стрелять боссу
+    private IEnumerator waitpls()
+    {
+        yield return new WaitForSeconds(1.5f);
+        recharged = true;
+    }
+        //корутина стрельбы
+        private IEnumerator Shoot() {
         recharged = false;//задаем состояние не перезаряжен
         animator.SetInteger("State", 4);//включаем анимацию стрельбы
-        yield return new WaitForSeconds(0.15f);//ждем 0.15 секунд      
+        yield return new WaitForSeconds(0.2f);//ждем 0.2 секунд      
         //цикл совершения 5ти выстрелов
         for (int i = 0; i < 5; ++i) {
             bossFX.PlayOneShot(ShootSound);//включаем звук выстрела
@@ -282,6 +290,7 @@ public class Boss : MonoBehaviour
             yield return new WaitForSeconds(ReloadTime);//ждем время перезарядки
         }
         canGo = false;//останавливаем врага
+        canDamage = false;
         animator.SetInteger("State", 5);//включаем анимацию перехода к уязвимости босса
         yield return new WaitForSeconds(0.4f);//ждем 0.4 секунды
         animator.SetInteger("State", 10);//включаем анимацию уязвимости босса
@@ -290,6 +299,7 @@ public class Boss : MonoBehaviour
         canTakeDamage = false;//запрещаем получать урон
         animator.SetInteger("State", 6);//включаем анимацию включения неуязвимости босса
         yield return new WaitForSeconds(1.5f);//ждем 1.5 секунды, чтобы дать игроку уйти
+        canDamage = true;
         canGo = true;//разрешаем двигаться
         recharged = true;//босс перезаряжен
     }
